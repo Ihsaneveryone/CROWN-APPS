@@ -1,0 +1,166 @@
+🕐 ===== TIMESTAMP DEBUG =====
+ 📅 Selected Date: 2026-05-29
+ 🕐 Submit Time (NOW): 2026-05-29T02:01:16.787Z
+ 🕐 Display Time: 09.01.16
+ ============================
+ 
+ 📝 Adding submission for branch A336...
+ 🔧 Using Apps Script endpoint...
+ 🔍 API DEBUG - submission.notes: Object
+ 🔍 API DEBUG - notes type: object
+ 🔍 API DEBUG - notes stringify: {"reason":"COBA","approval":"COBA","adminNik":"A336","adminNama":"MGR AZKO"}
+ 💾 localStorage cache HIT: branches
+ 📁 Google Drive folder ID: 1RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+ 
+ 🚀 ===== SENDING TO APPS SCRIPT =====
+ 📦 Payload action: addSubmission
+ 👤 User object: Object
+ 🎭 User role: Advisor
+ 📊 Data indicators: Array(9)
+ 📅 Date: 2026-05-29
+ 🕐 CreatedAt: 2026-05-29T02:01:16.787Z
+ 💯 TotalScore: 20
+ 
+ 📸 ===== PHOTOS DEBUG (GOOGLE DRIVE MODE) =====
+ 📁 Drive Folder ID: 1RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+ 📷 Photos to upload: 2 indicators
+ ✅ Photos ready for upload:
+    - wa_personal: 1 photo(s), ~15KB base64
+      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+    - mgb: 3 photo(s), ~12KB base64
+      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+ =====================================
+ 
+2 💾 Draft saved: draft_A336_191924
+ ✅ Submission added successfully
+ Draft cleared: draft_A336_191924
+ ⏰ Cache expired, will fetch fresh data
+ 📡 Fetching from server...
+ ⏱️ Timeout: 15 seconds (Supabase cold start bisa butuh 5-10 detik)
+ 📡 Fetching submissions for branch A336...
+ 📖 Reading from Google Sheets: submissions
+ Auto-save stopped
+ Auto-save started (every 30s)
+ ✅ Read 5 rows from submissions
+ ✅ Fetched 4/4 submissions
+ ⚡ Server response time: 408.10ms
+ 
+ 📡 ===== SERVER RESPONSE DEBUG =====
+ Expected NIK filter: 191924
+ Received submissions: 4
+ 
+ 📋 ALL SUBMISSIONS FROM SERVER:
+   [1] NIK: 191924 | Nama: IHSAN | Date: 2026-05-29 | ID: A336_191924_1780020076788
+   [2] NIK: 191924 | Nama: IHSAN | Date: 2026-05-29 | ID: A336_191924_1780019754256
+   [3] NIK: 191924 | Nama: IHSAN | Date: 2026-05-29 | ID: A336_191924_1780019209330
+   [4] NIK: 191924 | Nama: IHSAN | Date: 2026-05-28 | ID: A336_191924_1779982440287
+2 
+ ✅ Matching submissions: 4/4
+ ✅ Backend sudah filter by NIK dengan benar!
+ ====================================
+2 
+ 💾 ===== SAVING TO CACHE =====
+ Cache Key: submissions_A336_1_999999_191924
+ Submissions to cache: 4
+ Cache data size: 1748 bytes
+ ✅ Cache saved successfully!
+ Verified count: 4
+ ==============================
+2 
+ 📊 useSubmissions Hook Debug:
+   Branch ID: A336
+   Filter NIK: 191924
+   Enabled: true
+   Query status: Object
+   Submissions count: 4
+   Sample: Object
+2 
+ 🔍 ===== RIWAYAT DISPLAY =====
+ 👤 User Role: USER 👤
+ 📊 Total submissions from server: 4
+ ✅ Backend filter working - received only user data
+ 🛡️ ===== FRONTEND FILTER (PRIVACY PROTECTION) =====
+ 👤 User NIK: 191924
+ 📊 Total submissions from server: 4
+ ✅ After NIK filter: 4
+ 🗑️ Filtered out: 0 submissions dari user lain
+ 
+ 📅 DATE FILTER: TIDAK AKTIF
+ ✅ User akan melihat SEMUA data mereka (tidak ada batasan 5 hari!)
+ 
+ 📅 Data range:
+    Oldest: 28/5/2026
+    Newest: 29/5/2026
+    Total days: 1
+ ====================================================
+ 
+ 👤 USER MODE: Load More Pattern (Initial: 10, Increment: +10)
+ 📦 Total data user ini (after filter): 4
+ 📋 Currently displaying: 4
+ ➕ Has more data: false
+ ===================================
+2 
+ 🔥🔥🔥 ===== RIWAYAT DIBUKA ===== 🔥🔥🔥
+ 👤 User Role: 👤 USER
+ 📊 Branch ID: A336
+ 👤 User NIK: 191924
+ 👤 User Nama: IHSAN
+ 🔍 Filter Mode: FILTERED by NIK: 191924
+ 
+ 📊 DATA RECEIVED:
+    Total submissions: 4
+    Loading: false
+    Fetching: false
+    Error: false
+ 
+ 📋 ALL SUBMISSIONS RECEIVED:
+    [1] ID: A336_191924_1780020076788
+        NIK: 191924
+        Nama: IHSAN
+        Date: 2026-05-29
+        CreatedAt: 2026-05-29T02:01:16.787Z
+        Score: 20
+ 
+    [2] ID: A336_191924_1780019754256
+        NIK: 191924
+        Nama: IHSAN
+        Date: 2026-05-29
+        CreatedAt: 2026-05-29T01:55:54.255Z
+        Score: 25
+ 
+    [3] ID: A336_191924_1780019209330
+        NIK: 191924
+        Nama: IHSAN
+        Date: 2026-05-29
+        CreatedAt: 2026-05-29T01:46:49.329Z
+        Score: 25
+ 
+    [4] ID: A336_191924_1779982440287
+        NIK: 191924
+        Nama: IHSAN
+        Date: 2026-05-28
+        CreatedAt: 2026-05-28T15:34:00.286Z
+        Score: 60
+ 
+ ============================
+2 
+ 📊 useSubmissions Hook Debug:
+   Branch ID: A336
+   Filter NIK: 191924
+   Enabled: true
+   Query status: Object
+   Submissions count: 4
+   Sample: Object
+ 
+vendor-core-1830223d6f0ba72d.min.js.br:54 Too many elapsed hits of react since last report
+(anonymous) @ vendor-core-1830223d6f0ba72d.min.js.br:54Understand this warning
+The FetchEvent for "https://5c14537d-bf18-4750-8a87-1d5acc6296d9-v3-figmaiframepreview.figma.site/branch/A336" resulted in a network error response: the promise was rejected.Understand this warning
+preview_service_worker.js:156  Uncaught (in promise) TypeError: Failed to fetch
+    at releaseUnmatchedPendingRequests (preview_service_worker.js:156:23)
+    at handleAssetUrlMapUpdate (preview_service_worker.js:87:5)
+    at handleAssetUrlMapMessage (preview_service_worker.js:221:7)
+    at preview_service_worker.js:239:5
+releaseUnmatchedPendingRequests @ preview_service_worker.js:156
+handleAssetUrlMapUpdate @ preview_service_worker.js:87
+handleAssetUrlMapMessage @ preview_service_worker.js:221
+(anonymous) @ preview_service_worker.js:239Understand this error

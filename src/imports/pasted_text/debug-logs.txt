@@ -1,0 +1,160 @@
+✅ Indicators cached to localStorage
+ ✅ Read 5 rows from settings
+ ✅ Settings cached to localStorage
+ 🎯 Filtering indicators for role: Advisor
+ 📊 Total indicators from backend: 16
+ 🔍 DEBUG getIndicatorsByRole:
+    Role: Advisor
+    All indicators: Array(16)
+    Indicators with role field: Array(16)
+    Indicators without role field: Array(0)
+    Checking: Sales - role: "Advisor" === "Advisor" ? true
+    Checking: Trx - role: "Advisor" === "Advisor" ? true
+    Checking: Basket Size - role: "Advisor" === "Advisor" ? true
+    Checking: WA PERSONAL - role: "Advisor" === "Advisor" ? true
+    Checking: No Baru Customer - role: "Advisor" === "Advisor" ? true
+    Checking: After Sales Service - role: "Advisor" === "Advisor" ? true
+    Checking: Proteksi - role: "Advisor" === "Advisor" ? true
+    Checking: Google Review - role: "Advisor" === "Advisor" ? true
+    Checking: MGB - role: "Advisor" === "Advisor" ? true
+    Checking: Sales ID - role: "Cashier" === "Advisor" ? false
+    Checking: Transaksi - role: "Cashier" === "Advisor" ? false
+    Checking: New Member - role: "Cashier" === "Advisor" ? false
+    Checking: Instant Upgrade - role: "Cashier" === "Advisor" ? false
+    Checking: Greeting Customer - role: "CS" === "Advisor" ? false
+    Checking: Customer Service - role: "CS" === "Advisor" ? false
+    Checking: New Member - role: "CS" === "Advisor" ? false
+    ✅ Filtered result: 9 indicators
+ ✅ Filtered indicators for role Advisor : 9
+ 📋 Indicators: Array(9)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+ Auto-save stopped
+ Auto-save started (every 30s)
+2 💾 Draft saved: draft_A336_191924
+ Auto-save stopped
+ Auto-save started (every 30s)
+ 💾 Draft saved: draft_A336_191924
+ Auto-save stopped
+ Auto-save started (every 30s)
+ 💾 Draft saved: draft_A336_191924
+ Auto-save stopped
+ Auto-save started (every 30s)
+2 💾 Draft saved: draft_A336_191924
+ Auto-save stopped
+ Auto-save started (every 30s)
+2 💾 Draft saved: draft_A336_191924
+ Auto-save stopped
+ Auto-save started (every 30s)
+3 💾 Draft saved: draft_A336_191924
+ 🔍 DEBUG - savedNotes: Object
+ 🔍 DEBUG - notes fields: Object
+ Image compressed: 7.06KB → 4.80KB
+ Image compressed: 399.03KB → 15.73KB
+ Image compressed: 3302.07KB → 9.91KB
+2 Image compressed: 4231.43KB → 11.17KB
+ 
+ 🕐 ===== TIMESTAMP DEBUG =====
+ 📅 Selected Date: 2026-05-29
+ 🕐 Submit Time (NOW): 2026-05-29T01:34:52.763Z
+ 🕐 Display Time: 08.34.52
+ ============================
+ 
+ 📝 Adding submission for branch A336...
+ 🔧 Using Apps Script endpoint...
+ 🔍 API DEBUG - submission.notes: Object
+ 🔍 API DEBUG - notes type: object
+ 🔍 API DEBUG - notes stringify: {"reason":"IHSAN","approval":"IHSAN","adminNik":"A336","adminNama":"MGR AZKO"}
+ 📡 Fetching branches from Google Sheets...
+ 📖 Reading from Google Sheets: branches
+ ✅ Read 4 rows from branches
+ ✅ Fetched 3 branches
+ 📁 Google Drive folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+ 
+ 🚀 ===== SENDING TO APPS SCRIPT =====
+ 📦 Payload action: addSubmission
+ 👤 User object: Object
+ 🎭 User role: Advisor
+ 📊 Data indicators: Array(9)
+ 📅 Date: 2026-05-29
+ 🕐 CreatedAt: 2026-05-29T01:34:52.763Z
+ 💯 TotalScore: 36.4
+ 
+ 📸 ===== PHOTOS DEBUG (GOOGLE DRIVE MODE) =====
+ 📁 Drive Folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+ 📷 Photos to upload: 3 indicators
+ ✅ Photos ready for upload:
+    - wa_personal: 1 photo(s), ~6KB base64
+      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+    - after_sales: 1 photo(s), ~15KB base64
+      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+    - mgb: 3 photo(s), ~13KB base64
+      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+ =====================================
+ 
+ 💾 Draft saved: draft_A336_191924
+ ✅ Submission added successfully
+ Draft cleared: draft_A336_191924
+ 📡 No cache found, fetching from server...
+ 📡 Fetching from server...
+ ⏱️ Timeout: 15 seconds (Supabase cold start bisa butuh 5-10 detik)
+ 📡 Fetching submissions for branch A336...
+ 📖 Reading from Google Sheets: submissions
+ Auto-save stopped
+ Auto-save started (every 30s)
+ ✅ Read 5 rows from submissions
+ ✅ Fetched 4/4 submissions
+ ⚡ Server response time: 409.30ms
+ 
+ 📡 ===== SERVER RESPONSE DEBUG =====
+ Expected NIK filter: 191924
+ Received submissions: 4
+ 
+ 📋 ALL SUBMISSIONS FROM SERVER:
+   [1] NIK: 191924 | Nama: IHSAN | Date: 2026-05-29 | ID: A336_191924_1780018492764
+   [2] NIK: 191924 | Nama: Muhammad Ihsan | Date: 2026-05-29 | ID: A336_191924_1780018248372
+   [3] NIK: 191924 | Nama: Ihsan | Date: 2026-05-28 | ID: A336_191924_1779982698806
+   [4] NIK: 191924 | Nama: IHSAN | Date: 2026-05-28 | ID: A336_191924_1779982440287
+2 
+ ✅ Matching submissions: 4/4
+ ✅ Backend sudah filter by NIK dengan benar!
+ ====================================
+2 
+ 💾 ===== SAVING TO CACHE =====
+ Cache Key: submissions_A336_1_999999_191924
+ Submissions to cache: 4
+ Cache data size: 2275 bytes
+ ✅ Cache saved successfully!
+ Verified count: 4
+ ==============================
+ 
+The FetchEvent for "https://f3b89445-07b6-466a-95e9-b3784844e03a-v3-figmaiframepreview.figma.site/branch/A336" resulted in a network error response: the promise was rejected.Understand this warning
+The FetchEvent for "https://f3b89445-07b6-466a-95e9-b3784844e03a-v3-figmaiframepreview.figma.site/crown-select" resulted in a network error response: the promise was rejected.Understand this warning
+preview_service_worker.js:156  Uncaught (in promise) TypeError: Failed to fetch
+    at releaseUnmatchedPendingRequests (preview_service_worker.js:156:23)
+    at handleAssetUrlMapUpdate (preview_service_worker.js:87:5)
+    at handleAssetUrlMapMessage (preview_service_worker.js:221:7)
+    at preview_service_worker.js:239:5
+releaseUnmatchedPendingRequests @ preview_service_worker.js:156
+handleAssetUrlMapUpdate @ preview_service_worker.js:87
+handleAssetUrlMapMessage @ preview_service_worker.js:221
+(anonymous) @ preview_service_worker.js:239Understand this error
+preview_service_worker.js:156  Uncaught (in promise) TypeError: Failed to fetch
+    at releaseUnmatchedPendingRequests (preview_service_worker.js:156:23)
+    at handleAssetUrlMapUpdate (preview_service_worker.js:87:5)
+    at handleAssetUrlMapMessage (preview_service_worker.js:221:7)
+    at preview_service_worker.js:239:5
+releaseUnmatchedPendingRequests @ preview_service_worker.js:156
+handleAssetUrlMapUpdate @ preview_service_worker.js:87
+handleAssetUrlMapMessage @ preview_service_worker.js:221
+(anonymous) @ preview_service_worker.js:239Understand this error

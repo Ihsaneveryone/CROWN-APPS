@@ -1,0 +1,240 @@
+Running frontend commit 01ea6658a14a2b76a33613e41ef4d60f19994286
+browser-intake-datadoghq.com/api/v2/rum:1  Failed to load resource: the server responded with a status of 405 (Method Not Allowed)Understand this error
+vendor-core-1830223d6f0ba72d.min.js.br:54 Statsig is not ready to log exposures, will retry in 1 seconds
+(anonymous) @ vendor-core-1830223d6f0ba72d.min.js.br:54Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 Autosave Changes not available or already claimed by another tab undefined
+vendor-core-1830223d6f0ba72d.min.js.br:54 [import] git: 01ea6658a14a2b76a33613e41ef4d60f19994286, stamp: 04056C01A39FA220
+vendor-core-1830223d6f0ba72d.min.js.br:54 Loaded 43 scripts (6460525b), 0 from cache (0b)
+546-87aeef64e5e53e54.min.js.br:7 The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127
+initialize @ 546-87aeef64e5e53e54.min.js.br:7Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] Booting... (emscripten version 4.0.21)
+vendor-core-1830223d6f0ba72d.min.js.br:54 [GPU] graphicsAPI:"WebGPU", vendor:"Google Inc. (AMD)" renderer:"ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001681) Direct3D11 vs_5_0 ps_5_0, D3D11)" deviceArchitecture:"rdna-2" deviceDescription:"" webGPUDevice:"" webGPUVendor:"amd" bindings:"emdawnwebgpu"
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] Ready in 823.5ms
+546-87aeef64e5e53e54.min.js.br:7 The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127
+v @ 546-87aeef64e5e53e54.min.js.br:7Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-1830223d6f0ba72d.min.js.br:54 [MultiplayerSession] connecting to wss://www.figma.com/api/multiplayer/IKtyw7JXDKucmeYmhwf9X2?role=editor&tracking_session_id=R0rxZLXY9Z6fsiRd&version=153&recentReload=0&file-load-streaming-compression&user-id=1628076591949915201&client_release=01ea6658a14a2b76a33613e41ef4d60f19994286
+vendor-core-1830223d6f0ba72d.min.js.br:54 [MultiplayerSession] Joining file version 106 (initial load)
+vendor-core-1830223d6f0ba72d.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] loadtime=6.19s maxmem=17283396
+vendor-core-1830223d6f0ba72d.min.js.br:54 [devtools] Initialized LS
+/api/plans/bcf88437-1239-4f95-a3d8-d634aafcfc01/npm_private_registry/scopes:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+/api/make/IKtyw7JXDKucmeYmhwf9X2/cached_preview_urls?source_code_hash=d2129fb7a509d10c258ec492ebe6c2a8c8f7f291:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+vendor-core-1830223d6f0ba72d.min.js.br:54 [devtools] Initialized LS
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Sprigma] Sprig SDK is ready
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 AUTO-CHECK: Scanning for corrupted cache...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Cache scan complete!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔄 Loading branches from server...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching branches from Google Sheets...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 Checking app version...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎉 App version: 1.0.1
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Lightweight mode - ultra fast startup!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔗 Testing Google Sheets API connection...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🧪 Testing Google Sheets connection...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💡 Type CROWN_RECOVERY.help() in console for data recovery commands
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 4 rows from branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Fetched 3 branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Branch loaded from server: TEMPLATE
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching settings for branch A336...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 1 rows from branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Google Sheets API connected successfully!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 Spreadsheet: https://docs.google.com/spreadsheets/d/1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0/edit
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Google Sheets API connected successfully!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎉 Multi-device sync READY!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 4 rows from branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: settings
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 5 rows from settings
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🧹🧹🧹 FORCE CLEAR ALL CACHE BEFORE LOGIN 🧹🧹🧹
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ ALL CACHE CLEARED!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✨✨✨ AUTO CLEAR CACHE ON LOGIN ✨✨✨
+code_components_preview_iframe-540c55236895501d.min.js.br:66 User: IHSAN
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Branch: A336
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Clearing ALL cache untuk dapat data terbaru...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🧹 Clearing ALL caches...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Cleared 0 localStorage items
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ All caches cleared!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ ALL cache cleared!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎉 Login dengan data fresh!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ====================================
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎯 Filtering indicators for role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 Total indicators from backend: 0
+StaffDashboard.tsx:61 ℹ️ Backend indicators missing role field — using hardcoded defaults for role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Hardcoded indicators loaded: 6
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔄 Fetching indicators from API...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 ===== GET INDICATORS DEBUG =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Branch ID: A336
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Cache key: indicators_A336
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching indicators from Google Sheets (NO CACHE)...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔄 Fetching settings from API...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching settings for branch A336...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: indicators
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: settings
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎯 Filtering indicators for role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 Total indicators from backend: 0
+StaffDashboard.tsx:61 ℹ️ Backend indicators missing role field — using hardcoded defaults for role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Hardcoded indicators loaded: 6
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 17 rows from indicators
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📥 Total indicators from Sheets: 16
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 Filtered for branch A336: 16 indicators
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 RAW Sales indicator dari Google Sheets:
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - id: sales
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - name: Sales
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - targetValue (RAW string): 7000000
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - targetValue type: string
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ PARSED Sales indicator:
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - targetValue (parsed number): 7000000
+code_components_preview_iframe-540c55236895501d.min.js.br:66   - Full object: Object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Fetched 16 indicators for A336
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ====================================
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Indicators cached to localStorage
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 5 rows from settings
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Settings cached to localStorage
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎯 Filtering indicators for role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 Total indicators from backend: 16
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 DEBUG getIndicatorsByRole:
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66    All indicators: Array(16)
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Indicators with role field: Array(16)
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Indicators without role field: Array(0)
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Sales - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Trx - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Basket Size - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: WA PERSONAL - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: No Baru Customer - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: After Sales Service - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Proteksi - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Google Review - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: MGB - role: "Advisor" === "Advisor" ? true
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Sales ID - role: "Cashier" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Transaksi - role: "Cashier" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: New Member - role: "Cashier" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Instant Upgrade - role: "Cashier" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Greeting Customer - role: "CS" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: Customer Service - role: "CS" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    Checking: New Member - role: "CS" === "Advisor" ? false
+code_components_preview_iframe-540c55236895501d.min.js.br:66    ✅ Filtered result: 9 indicators
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Filtered indicators for role Advisor : 9
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📋 Indicators: Array(9)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+3code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+2code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+3code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+3code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 DEBUG - savedNotes: Object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 DEBUG - notes fields: Object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Image compressed: 3016.46KB → 8.85KB
+2code_components_preview_iframe-540c55236895501d.min.js.br:66 Image compressed: 3302.07KB → 9.91KB
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Image compressed: 3016.46KB → 8.85KB
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Image compressed: 4231.43KB → 11.17KB
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🕐 ===== TIMESTAMP DEBUG =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📅 Selected Date: 2026-05-29
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🕐 Submit Time (NOW): 2026-05-29T01:46:49.329Z
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🕐 Display Time: 08.46.49
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ============================
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📝 Adding submission for branch A336...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔧 Using Apps Script endpoint...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 API DEBUG - submission.notes: Object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 API DEBUG - notes type: object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🔍 API DEBUG - notes stringify: {"reason":"IHSAN","approval":"IHSA","adminNik":"A336","adminNama":"MGR AZKO"}
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching branches from Google Sheets...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 4 rows from branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Fetched 3 branches
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📁 Google Drive folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🚀 ===== SENDING TO APPS SCRIPT =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📦 Payload action: addSubmission
+code_components_preview_iframe-540c55236895501d.min.js.br:66 👤 User object: Object
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🎭 User role: Advisor
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📊 Data indicators: Array(6)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📅 Date: 2026-05-29
+code_components_preview_iframe-540c55236895501d.min.js.br:66 🕐 CreatedAt: 2026-05-29T01:46:49.329Z
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💯 TotalScore: 25
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📸 ===== PHOTOS DEBUG (GOOGLE DRIVE MODE) =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📁 Drive Folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📷 Photos to upload: 3 indicators
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Photos ready for upload:
+code_components_preview_iframe-540c55236895501d.min.js.br:66    - wa_personal: 1 photo(s), ~13KB base64
+code_components_preview_iframe-540c55236895501d.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-540c55236895501d.min.js.br:66    - after_sales: 1 photo(s), ~12KB base64
+code_components_preview_iframe-540c55236895501d.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-540c55236895501d.min.js.br:66    - mgb: 3 photo(s), ~13KB base64
+code_components_preview_iframe-540c55236895501d.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-540c55236895501d.min.js.br:66 =====================================
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Submission added successfully
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Draft cleared: draft_A336_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 No cache found, fetching from server...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching from server...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ⏱️ Timeout: 15 seconds (Supabase cold start bisa butuh 5-10 detik)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 Fetching submissions for branch A336...
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📖 Reading from Google Sheets: submissions
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Read 3 rows from submissions
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Fetched 2/2 submissions
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ⚡ Server response time: 384.60ms
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📡 ===== SERVER RESPONSE DEBUG =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Expected NIK filter: 191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Received submissions: 2
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 📋 ALL SUBMISSIONS FROM SERVER:
+code_components_preview_iframe-540c55236895501d.min.js.br:66   [1] NIK: 191924 | Nama: IHSAN | Date: 2026-05-29 | ID: A336_191924_1780019209330
+code_components_preview_iframe-540c55236895501d.min.js.br:66   [2] NIK: 191924 | Nama: IHSAN | Date: 2026-05-28 | ID: A336_191924_1779982440287
+2code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Matching submissions: 2/2
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Backend sudah filter by NIK dengan benar!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ====================================
+2code_components_preview_iframe-540c55236895501d.min.js.br:66 
+code_components_preview_iframe-540c55236895501d.min.js.br:66 💾 ===== SAVING TO CACHE =====
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Cache Key: submissions_A336_1_999999_191924
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Submissions to cache: 2
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Cache data size: 1004 bytes
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ✅ Cache saved successfully!
+code_components_preview_iframe-540c55236895501d.min.js.br:66 Verified count: 2
+code_components_preview_iframe-540c55236895501d.min.js.br:66 ==============================
+code_components_preview_iframe-540c55236895501d.min.js.br:66 
+The FetchEvent for "https://eb3a1f9c-fac5-4f72-82bd-883b2d7f3b4b-v3-figmaiframepreview.figma.site/branch/A336" resulted in a network error response: the promise was rejected.Understand this warning
+preview_service_worker.js:156  Uncaught (in promise) TypeError: Failed to fetch
+    at releaseUnmatchedPendingRequests (preview_service_worker.js:156:23)
+    at handleAssetUrlMapUpdate (preview_service_worker.js:87:5)
+    at handleAssetUrlMapMessage (preview_service_worker.js:221:7)
+    at preview_service_worker.js:239:5
+releaseUnmatchedPendingRequests @ preview_service_worker.js:156
+handleAssetUrlMapUpdate @ preview_service_worker.js:87
+handleAssetUrlMapMessage @ preview_service_worker.js:221
+(anonymous) @ preview_service_worker.js:239Understand this error

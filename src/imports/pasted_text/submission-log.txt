@@ -1,0 +1,85 @@
+📦 ===== SUBMISSION OBJECT =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ID: A336_191924_1780018248372
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 User: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Date: 2026-05-29
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 CreatedAt: 2026-05-29T01:30:48.371Z
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 TotalScore: 88.6
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📝 Adding submission for branch A336...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔧 Using Apps Script endpoint...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 API DEBUG - submission.notes: undefined
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 API DEBUG - notes type: undefined
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 API DEBUG - notes stringify: undefined
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 4 rows from branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⚡ Cache HIT: branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📁 Google Drive folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🚀 ===== SENDING TO APPS SCRIPT =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📦 Payload action: addSubmission
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User object: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🎭 User role: Advisor
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Data indicators: Array(10)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📅 Date: 2026-05-29
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🕐 CreatedAt: 2026-05-29T01:30:48.371Z
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 💯 TotalScore: 88.6
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📸 ===== PHOTOS DEBUG (GOOGLE DRIVE MODE) =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📁 Drive Folder ID: RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📷 Photos to upload: 3 indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Photos ready for upload:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    - wa_personal: 1 photo(s), ~10KB base64
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    - after_sales: 1 photo(s), ~11KB base64
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    - mgb: 3 photo(s), ~13KB base64
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66      First photo starts with: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 =====================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 💾 Draft saved: draft_A336_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Submission added successfully
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Draft cleared: draft_A336_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 No cache found, fetching from server...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching from server...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⏱️ Timeout: 15 seconds (Supabase cold start bisa butuh 5-10 detik)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching submissions for branch A336...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Auto-save started (every 30s)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 4 rows from submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 3/3 submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⚡ Server response time: 408.40ms
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 ===== SERVER RESPONSE DEBUG =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Expected NIK filter: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Received submissions: 3
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📋 ALL SUBMISSIONS FROM SERVER:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   [1] NIK: 191924 | Nama: Muhammad Ihsan | Date: 2026-05-29 | ID: A336_191924_1780018248372
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   [2] NIK: 191924 | Nama: Ihsan | Date: 2026-05-28 | ID: A336_191924_1779982698806
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   [3] NIK: 191924 | Nama: IHSAN | Date: 2026-05-28 | ID: A336_191924_1779982440287
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Matching submissions: 3/3
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Backend sudah filter by NIK dengan benar!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 💾 ===== SAVING TO CACHE =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache Key: submissions_A336_1_999999_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Submissions to cache: 3
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache data size: 1660 bytes
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Cache saved successfully!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Verified count: 3
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ==============================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+The FetchEvent for "https://5ddf50dc-8e95-4144-8bfe-0e27209494bd-v3-figmaiframepreview.figma.site/branch/A336" resulted in a network error response: the promise was rejected.Understand this warning
+preview_service_worker.js:156  Uncaught (in promise) TypeError: Failed to fetch
+    at releaseUnmatchedPendingRequests (preview_service_worker.js:156:23)
+    at handleAssetUrlMapUpdate (preview_service_worker.js:87:5)
+    at handleAssetUrlMapMessage (preview_service_worker.js:221:7)
+    at preview_service_worker.js:239:5
+releaseUnmatchedPendingRequests @ preview_service_worker.js:156
+handleAssetUrlMapUpdate @ preview_service_worker.js:87
+handleAssetUrlMapMessage @ preview_service_worker.js:221
+(anonymous) @ preview_service_worker.js:239Understand this error

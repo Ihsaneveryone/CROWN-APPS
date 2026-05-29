@@ -1,0 +1,660 @@
+/**
+ * =====================================================================
+ * CROWN DAILY INDICATORS - MASTER SPREADSHEET APPS SCRIPT
+ * =====================================================================
+ *
+ * DEPLOYMENT:
+ * - Execute as: Me (your account)
+ * - Who has access: Anyone
+ *
+ * SPREADSHEET ID:
+ * - MASTER: 1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0
+ *
+ * GOOGLE DRIVE FOLDER ID (untuk foto master):
+ * - MASTER: 1RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU
+ *
+ * FITUR:
+ * ✅ Manage branches (create, update admin)
+ * ✅ Settings management
+ * ✅ Indicators management
+ * ✅ Submissions dengan foto di Google Drive
+ * ✅ Batch delete submissions
+ * ✅ Support per-branch Google Drive folder
+ *
+ * =====================================================================
+ */
+
+// ============= KONFIGURASI =============
+const MASTER_SPREADSHEET_ID = '1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0';
+const MASTER_GDRIVE_FOLDER_ID = '1RjScSYlsqKMRmbv-Bk6bHLJyV9rM0NLU'; // ✅ Folder untuk foto master
+
+// ============= HELPER FUNCTIONS =============
+
+function openTargetSpreadsheet(spreadsheetId) {
+  var sid = spreadsheetId || MASTER_SPREADSHEET_ID;
+  return SpreadsheetApp.openById(sid);
+}
+
+// Extract indicator values from submission data
+function extractIndicatorValues(data) {
+  var values = {};
+  if (!data) return values;
+
+  if (Array.isArray(data)) {
+    for (var i = 0; i < data.length; i++) {
+      var ind = data[i];
+      if (ind && ind.id) {
+        values[ind.id] = ind.value != null ? ind.value : 0;
+      }
+    }
+  } else if (typeof data === 'object') {
+    var keys = Object.keys(data);
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var v = data[key];
+      values[key] = (v && typeof v === 'object') ? (v.value != null ? v.value : 0) : (v != null ? v : 0);
+    }
+  }
+  return values;
+}
+
+// Upload base64 image to Google Drive
+function uploadBase64ToDrive(base64Data, filename, folderId) {
+  if (!folderId) {
+    Logger.log('⚠️ No folderId provided - skipping Drive upload');
+    return null;
+  }
+
+  try {
+    var parts = base64Data.split(',');
+    if (parts.length < 2) return null;
+
+    var mimeType = parts[0].split(';')[0].split(':')[1] || 'image/jpeg';
+    var bytes = Utilities.base64Decode(parts[1]);
+    var blob = Utilities.newBlob(bytes, mimeType, filename + '.jpg');
+
+    var folder = DriveApp.getFolderById(folderId);
+    var file = folder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+    var driveUrl = 'https://drive.google.com/uc?id=' + file.getId();
+    Logger.log('✅ Uploaded to Drive: ' + driveUrl);
+    return driveUrl;
+  } catch (e) {
+    Logger.log('❌ Drive upload error: ' + e.toString());
+    return null;
+  }
+}
+
+// Process photos - upload base64 to Drive and return URLs
+function processPhotos(photos, submissionId, gdriveFolderId) {
+  Logger.log('🔍 processPhotos called with:');
+  Logger.log('  - photos type: ' + typeof photos);
+  Logger.log('  - photos is null/undefined: ' + (!photos));
+
+  if (!photos || typeof photos !== 'object') {
+    Logger.log('❌ Photos is null or not an object - returning empty string');
+    return '';
+  }
+
+  var urlMap = {};
+  var keys = Object.keys(photos);
+
+  Logger.log('  - photos keys: ' + keys.join(', '));
+  Logger.log('  - submissionId: ' + submissionId);
+  Logger.log('  - gdriveFolderId received: ' + gdriveFolderId);
+
+  // ✅ Fallback ke MASTER folder jika tidak ada gdriveFolderId
+  var targetFolderId = gdriveFolderId || MASTER_GDRIVE_FOLDER_ID;
+
+  Logger.log('📸 Processing ' + keys.length + ' photo sets...');
+  Logger.log('📁 Target Drive folder ID: ' + targetFolderId);
+  Logger.log('📁 MASTER fallback: ' + MASTER_GDRIVE_FOLDER_ID);
+
+  for (var ki = 0; ki < keys.length; ki++) {
+    var indicatorId = keys[ki];
+    var photoList = photos[indicatorId];
+
+    Logger.log('🔍 Processing indicator: ' + indicatorId);
+    Logger.log('  - photoList type: ' + typeof photoList);
+    Logger.log('  - photoList is Array: ' + Array.isArray(photoList));
+    Logger.log('  - photoList length: ' + (photoList ? photoList.length : 0));
+
+    if (!Array.isArray(photoList) || photoList.length === 0) {
+      Logger.log('  ⚠️ Skipping - not array or empty');
+      continue;
+    }
+
+    var urls = [];
+    for (var i = 0; i < photoList.length; i++) {
+      var photo = photoList[i];
+      Logger.log('  🔍 Photo ' + i + ' type: ' + typeof photo);
+      Logger.log('  🔍 Photo ' + i + ' length: ' + (photo ? photo.length : 0));
+
+      if (typeof photo !== 'string') {
+        Logger.log('  ⚠️ Photo ' + i + ' is not a string - skipping');
+        continue;
+      }
+
+      var photoStart = photo.substring(0, 50);
+      Logger.log('  🔍 Photo ' + i + ' starts with: ' + photoStart);
+
+      if (photo.startsWith('http')) {
+        Logger.log('  ✅ Photo ' + i + ' is already a URL');
+        urls.push(photo);
+      } else if (photo.startsWith('data:')) {
+        Logger.log('  📤 Photo ' + i + ' is base64 - uploading to Drive...');
+        if (targetFolderId) {
+          var filename = submissionId + '_' + indicatorId + '_' + i;
+          Logger.log('  📝 Filename: ' + filename);
+          var url = uploadBase64ToDrive(photo, filename, targetFolderId);
+          if (url) {
+            Logger.log('  ✅ Upload success: ' + url);
+            urls.push(url);
+          } else {
+            Logger.log('  ❌ Upload failed - got null/undefined');
+          }
+        } else {
+          Logger.log('  ⚠️ Skipping base64 photo - no Drive folder configured');
+        }
+      } else {
+        Logger.log('  ⚠️ Photo ' + i + ' does not start with http or data: - skipping');
+      }
+    }
+
+    Logger.log('  📊 Total URLs collected for ' + indicatorId + ': ' + urls.length);
+    if (urls.length > 0) {
+      urlMap[indicatorId] = urls;
+    }
+  }
+
+  var result = Object.keys(urlMap).length > 0 ? JSON.stringify(urlMap) : '';
+  Logger.log('✅ Photos processed result:');
+  Logger.log('  - urlMap keys: ' + Object.keys(urlMap).join(', '));
+  Logger.log('  - JSON length: ' + result.length + ' chars');
+  Logger.log('  - JSON preview: ' + result.substring(0, 200));
+  return result;
+}
+
+// ============= API HANDLERS =============
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: 'ok',
+      message: 'Crown Daily Indicators - Master API',
+      version: '1.0',
+      timestamp: new Date().toISOString()
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action;
+    if (!action) throw new Error('Missing action');
+
+    var result;
+    var targetSpreadsheetId = params.spreadsheetId || null;
+
+    Logger.log('📥 Action: ' + action + ' | Spreadsheet: ' + (targetSpreadsheetId || 'MASTER'));
+
+    switch (action) {
+      case 'addSubmission':
+        if (!params.data) throw new Error('Missing data');
+        result = addSubmission(params.data, targetSpreadsheetId);
+        break;
+
+      case 'deleteSubmissions':
+        if (!params.data || !params.data.ids) throw new Error('Missing data.ids');
+        result = deleteSubmissions(params.data.ids, targetSpreadsheetId);
+        break;
+
+      case 'updateSettings':
+        if (!params.data) throw new Error('Missing data');
+        result = updateSettings(params.data, targetSpreadsheetId);
+        break;
+
+      case 'updateIndicators':
+        if (!params.data) throw new Error('Missing data');
+        result = updateIndicators(params.data, targetSpreadsheetId);
+        break;
+
+      case 'createBranch':
+        if (!params.data) throw new Error('Missing data');
+        result = createBranch(params.data);
+        break;
+
+      case 'updateBranchAdmin':
+        if (!params.data) throw new Error('Missing data');
+        result = updateBranchAdmin(params.data);
+        break;
+
+      case 'getIndicators':
+        result = getIndicators(targetSpreadsheetId);
+        break;
+
+      case 'getSettings':
+        result = getSettings(params.branchId, targetSpreadsheetId);
+        break;
+
+      default:
+        throw new Error('Invalid action: ' + action);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: true,
+        data: result,
+        timestamp: new Date().toISOString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('❌ doPost error: ' + error.toString());
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: false,
+        error: error.toString(),
+        timestamp: new Date().toISOString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ============= SUBMISSION FUNCTIONS =============
+
+function addSubmission(submission, spreadsheetId) {
+  try {
+    Logger.log('📝 addSubmission: ' + submission.id);
+
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('submissions');
+    if (!sheet) throw new Error('Sheet "submissions" not found');
+
+    // Extract user data
+    var userRole = '';
+    if (submission.user && submission.user.role) {
+      userRole = String(submission.user.role);
+    }
+
+    // Extract indicator values
+    var indValues = extractIndicatorValues(submission.data);
+
+    // 🔍 DEBUG: Log received data
+    Logger.log('🔍 DEBUG - Received submission.gdriveFolderId: ' + submission.gdriveFolderId);
+    Logger.log('🔍 DEBUG - Received submission.photos type: ' + typeof submission.photos);
+    Logger.log('🔍 DEBUG - Received submission.photos keys: ' + (submission.photos ? Object.keys(submission.photos).join(', ') : 'NONE'));
+
+    // ✅ Get Drive folder ID (fallback to MASTER if not provided)
+    var gdriveFolderId = submission.gdriveFolderId || MASTER_GDRIVE_FOLDER_ID;
+    Logger.log('📁 Drive Folder ID to use: ' + gdriveFolderId);
+    Logger.log('📁 MASTER_GDRIVE_FOLDER_ID: ' + MASTER_GDRIVE_FOLDER_ID);
+
+    // Process photos - upload to Drive
+    var photosStr = processPhotos(submission.photos || {}, submission.id || 'sub', gdriveFolderId);
+    Logger.log('🔍 DEBUG - photosStr result: ' + photosStr);
+
+    // Process notes
+    var notesStr = '';
+    var reason = '';
+    var approval = '';
+    var adminNik = '';
+    var adminNama = '';
+
+    if (submission.notes && typeof submission.notes === 'object') {
+      reason = submission.notes.reason || '';
+      approval = submission.notes.approval || '';
+      adminNik = submission.notes.adminNik || '';
+      adminNama = submission.notes.adminNama || '';
+      notesStr = JSON.stringify(submission.notes);
+    } else if (submission.notes) {
+      notesStr = String(submission.notes);
+    }
+
+    // ✅ Build row data dengan indicator values
+    // Order harus sama dengan setupSubmissionsHeader()
+    var INDICATOR_IDS = [
+      'wa_personal', 'no_baru', 'after_sales', 'proteksi', 'google_review', 'mgb',
+      'cashier-sales-id', 'cashier-trx', 'cashier-new-member', 'cashier-instant-upgrade',
+      'cs-greeting', 'cs-service', 'cs-new-member'
+    ];
+
+    var rowData = [
+      submission.id || '',
+      submission.branchId || '',
+      submission.user ? (submission.user.nik || '') : '',
+      submission.user ? (submission.user.nama || '') : '',
+      userRole,
+      submission.date || '',
+      submission.createdAt || new Date().toISOString(),
+      submission.totalScore || 0,
+      JSON.stringify(submission.data || {}),
+      photosStr,
+      notesStr,
+      reason,
+      approval,
+      adminNik,
+      adminNama
+    ];
+
+    // Append indicator values
+    for (var idx = 0; idx < INDICATOR_IDS.length; idx++) {
+      var indicatorId = INDICATOR_IDS[idx];
+      rowData.push(indValues[indicatorId] || '');
+    }
+
+    Logger.log('🔍 DEBUG - rowData length: ' + rowData.length + ' (should be 28)');
+    Logger.log('🔍 DEBUG - indValues: ' + JSON.stringify(indValues));
+
+    sheet.appendRow(rowData);
+    Logger.log('✅ Submission saved with ' + Object.keys(photosStr.length > 0 ? JSON.parse(photosStr) : {}).length + ' photo sets');
+
+    return { id: submission.id, success: true };
+
+  } catch (error) {
+    Logger.log('❌ addSubmission error: ' + error.toString());
+    throw error;
+  }
+}
+
+function deleteSubmissions(ids, spreadsheetId) {
+  try {
+    Logger.log('🗑️ Deleting ' + ids.length + ' submissions...');
+
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('submissions');
+    if (!sheet) throw new Error('Sheet "submissions" not found');
+
+    var values = sheet.getDataRange().getValues();
+    var rowsToDelete = [];
+
+    // Find rows to delete
+    for (var i = 1; i < values.length; i++) {
+      var rowId = values[i][0];
+      if (ids.indexOf(rowId) !== -1) {
+        rowsToDelete.push(i + 1); // Row numbers are 1-indexed
+      }
+    }
+
+    // Delete from bottom to top
+    rowsToDelete.sort(function(a, b) { return b - a; });
+
+    for (var j = 0; j < rowsToDelete.length; j++) {
+      sheet.deleteRow(rowsToDelete[j]);
+    }
+
+    Logger.log('✅ Deleted ' + rowsToDelete.length + ' rows');
+
+    return {
+      success: true,
+      deletedCount: rowsToDelete.length,
+      requestedCount: ids.length
+    };
+
+  } catch (error) {
+    Logger.log('❌ deleteSubmissions error: ' + error.toString());
+    throw error;
+  }
+}
+
+// ============= SETTINGS FUNCTIONS =============
+
+function updateSettings(data, spreadsheetId) {
+  try {
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('settings');
+    if (!sheet) throw new Error('Sheet "settings" not found');
+
+    var values = sheet.getDataRange().getValues();
+    var branchId = data.branchId || 'default';
+
+    // Find existing row
+    for (var i = 1; i < values.length; i++) {
+      if (values[i][0] === branchId) {
+        sheet.getRange(i + 1, 1, 1, 6).setValues([[
+          branchId,
+          data.loginTitle || '',
+          data.loginSubtitle || '',
+          data.minSubmitScore || 80,
+          values[i][4], // keep createdAt
+          new Date().toISOString()
+        ]]);
+        return { success: true };
+      }
+    }
+
+    // Not found - append new row
+    sheet.appendRow([
+      branchId,
+      data.loginTitle || '',
+      data.loginSubtitle || '',
+      data.minSubmitScore || 80,
+      new Date().toISOString(),
+      new Date().toISOString()
+    ]);
+
+    return { success: true };
+
+  } catch (error) {
+    Logger.log('❌ updateSettings error: ' + error.toString());
+    throw error;
+  }
+}
+
+function getSettings(branchId, spreadsheetId) {
+  try {
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('settings');
+    if (!sheet) return null;
+
+    var values = sheet.getDataRange().getValues();
+    var targetBranchId = branchId || 'default';
+
+    for (var i = 1; i < values.length; i++) {
+      if (values[i][0] === targetBranchId) {
+        return {
+          branchId: values[i][0],
+          loginTitle: values[i][1],
+          loginSubtitle: values[i][2],
+          minSubmitScore: values[i][3],
+          createdAt: values[i][4],
+          updatedAt: values[i][5]
+        };
+      }
+    }
+
+    return null;
+
+  } catch (error) {
+    Logger.log('❌ getSettings error: ' + error.toString());
+    return null;
+  }
+}
+
+// ============= INDICATORS FUNCTIONS =============
+
+function updateIndicators(indicators, spreadsheetId) {
+  try {
+    Logger.log('📝 Updating ' + indicators.length + ' indicators...');
+
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('indicators');
+    if (!sheet) throw new Error('Sheet "indicators" not found');
+
+    // Clear existing data (keep header)
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      sheet.deleteRows(2, lastRow - 1);
+    }
+
+    // Add new indicators
+    for (var i = 0; i < indicators.length; i++) {
+      var ind = indicators[i];
+      sheet.appendRow([
+        ind.branchId || '',
+        ind.id || '',
+        ind.name || '',
+        ind.type || 'number',
+        ind.targetValue || '',
+        ind.targetPhotos || '',
+        ind.weight || 0,
+        ind.icon || '',
+        ind.role || '',
+        ind.createdAt || new Date().toISOString()
+      ]);
+    }
+
+    Logger.log('✅ Indicators updated');
+    return { success: true, count: indicators.length };
+
+  } catch (error) {
+    Logger.log('❌ updateIndicators error: ' + error.toString());
+    throw error;
+  }
+}
+
+function getIndicators(spreadsheetId) {
+  try {
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('indicators');
+    if (!sheet) return [];
+
+    var values = sheet.getDataRange().getValues();
+    var indicators = [];
+
+    for (var i = 1; i < values.length; i++) {
+      indicators.push({
+        branchId: values[i][0],
+        id: values[i][1],
+        name: values[i][2],
+        type: values[i][3],
+        targetValue: values[i][4],
+        targetPhotos: values[i][5],
+        weight: values[i][6],
+        icon: values[i][7],
+        role: values[i][8],
+        createdAt: values[i][9]
+      });
+    }
+
+    return indicators;
+
+  } catch (error) {
+    Logger.log('❌ getIndicators error: ' + error.toString());
+    return [];
+  }
+}
+
+// ============= BRANCH MANAGEMENT =============
+
+function createBranch(branchData) {
+  try {
+    Logger.log('🏢 Creating branch: ' + branchData.id);
+
+    var ss = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+    var sheet = ss.getSheetByName('branches');
+    if (!sheet) throw new Error('Sheet "branches" not found');
+
+    sheet.appendRow([
+      branchData.id || '',
+      branchData.nik || '',
+      branchData.name || '',
+      branchData.displayName || '',
+      branchData.adminName || '',
+      branchData.spreadsheetId || '',
+      branchData.appsScriptUrl || '',
+      branchData.gdriveFolderId || '',
+      new Date().toISOString(),
+      ''
+    ]);
+
+    Logger.log('✅ Branch created');
+    return { success: true };
+
+  } catch (error) {
+    Logger.log('❌ createBranch error: ' + error.toString());
+    throw error;
+  }
+}
+
+function updateBranchAdmin(data) {
+  try {
+    Logger.log('👤 Updating admin for branch: ' + data.branchId);
+
+    var ss = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+    var sheet = ss.getSheetByName('branches');
+    if (!sheet) throw new Error('Sheet "branches" not found');
+
+    var values = sheet.getDataRange().getValues();
+
+    for (var i = 1; i < values.length; i++) {
+      if (values[i][0] === data.branchId) {
+        sheet.getRange(i + 1, 5).setValue(data.adminName);
+        sheet.getRange(i + 1, 10).setValue(data.lastNameChange || new Date().toISOString());
+        Logger.log('✅ Admin updated');
+        return { success: true };
+      }
+    }
+
+    throw new Error('Branch not found: ' + data.branchId);
+
+  } catch (error) {
+    Logger.log('❌ updateBranchAdmin error: ' + error.toString());
+    throw error;
+  }
+}
+
+// ============= SETUP FUNCTIONS =============
+
+/**
+ * RUN THIS ONCE to setup submissions sheet header
+ */
+function setupSubmissionsHeader() {
+  var ss = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('submissions');
+
+  if (!sheet) {
+    sheet = ss.insertSheet('submissions');
+  }
+
+  var headers = [
+    'id',
+    'branchId',
+    'userNik',
+    'userName',
+    'userRole',
+    'date',
+    'createdAt',
+    'totalScore',
+    'data',
+    'photos',
+    'notes',
+    'Reason',
+    'Approval',
+    'Admin NIK',
+    'Admin Nama',
+    // ADVISOR indicators
+    'wa_personal',
+    'no_baru',
+    'after_sales',
+    'proteksi',
+    'google_review',
+    'mgb',
+    // CASHIER indicators
+    'cashier-sales-id',
+    'cashier-trx',
+    'cashier-new-member',
+    'cashier-instant-upgrade',
+    // CS indicators
+    'cs-greeting',
+    'cs-service',
+    'cs-new-member'
+  ];
+
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+
+  Logger.log('✅ Submissions header setup complete - ' + headers.length + ' columns');
+}

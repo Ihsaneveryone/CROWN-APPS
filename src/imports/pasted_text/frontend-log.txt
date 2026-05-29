@@ -1,0 +1,137 @@
+Running frontend commit 01ea6658a14a2b76a33613e41ef4d60f19994286
+vendor-core-1830223d6f0ba72d.min.js.br:54 Statsig is not ready to log exposures, will retry in 1 seconds
+(anonymous) @ vendor-core-1830223d6f0ba72d.min.js.br:54Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 [import] git: 01ea6658a14a2b76a33613e41ef4d60f19994286, stamp: 04056C01A39FA220
+vendor-core-1830223d6f0ba72d.min.js.br:54 Autosave Changes not available or already claimed by another tab undefined
+browser-intake-datadoghq.com/api/v2/rum:1  Failed to load resource: the server responded with a status of 405 (Method Not Allowed)Understand this error
+546-87aeef64e5e53e54.min.js.br:7 The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127
+initialize @ 546-87aeef64e5e53e54.min.js.br:7Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] Booting... (emscripten version 4.0.21)
+vendor-core-1830223d6f0ba72d.min.js.br:54 [GPU] graphicsAPI:"WebGPU", vendor:"Google Inc. (AMD)" renderer:"ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001681) Direct3D11 vs_5_0 ps_5_0, D3D11)" deviceArchitecture:"rdna-2" deviceDescription:"" webGPUDevice:"" webGPUVendor:"amd" bindings:"emdawnwebgpu"
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] Ready in 525.1ms
+546-87aeef64e5e53e54.min.js.br:7 The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127
+v @ 546-87aeef64e5e53e54.min.js.br:7Understand this warning
+vendor-core-1830223d6f0ba72d.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-1830223d6f0ba72d.min.js.br:54 [MultiplayerSession] connecting to wss://www.figma.com/api/multiplayer/IKtyw7JXDKucmeYmhwf9X2?role=editor&tracking_session_id=gh1ukuVZyETtbO8K&version=153&recentReload=0&file-load-streaming-compression&user-id=1628076591949915201&client_release=01ea6658a14a2b76a33613e41ef4d60f19994286
+vendor-core-1830223d6f0ba72d.min.js.br:54 [FullscreenApp] calling setEditorTheme and setting preference dark
+vendor-core-1830223d6f0ba72d.min.js.br:54 [MultiplayerSession] Joining file version 106 (initial load)
+vendor-core-1830223d6f0ba72d.min.js.br:54 Loaded 0 scripts (0b), 0 from cache (0b)
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Fullscreen] loadtime=4.71s maxmem=18234236
+vendor-core-1830223d6f0ba72d.min.js.br:54 [devtools] Initialized LS
+/api/plans/bcf88437-1239-4f95-a3d8-d634aafcfc01/npm_private_registry/scopes:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+/api/make/IKtyw7JXDKucmeYmhwf9X2/cached_preview_urls?source_code_hash=3f8067f5c39a4e2090d0035dcd8c36c58672f623:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+vendor-core-1830223d6f0ba72d.min.js.br:54 [devtools] Initialized LS
+vendor-core-1830223d6f0ba72d.min.js.br:54 [Sprigma] Sprig SDK is ready
+ 🔍 AUTO-CHECK: Scanning for corrupted cache...
+ ✅ Cache scan complete!
+ 🔄 Loading branches from server...
+ 📡 Fetching branches from Google Sheets...
+ 📖 Reading from Google Sheets: branches
+ 🔍 Checking app version...
+ 🎉 App version: 1.0.1
+ ✅ Lightweight mode - ultra fast startup!
+ 🔗 Testing Google Sheets API connection...
+ 🧪 Testing Google Sheets connection...
+ 📖 Reading from Google Sheets: branches
+ 💡 Type CROWN_RECOVERY.help() in console for data recovery commands
+ ✅ Read 1 rows from branches
+ ✅ Google Sheets API connected successfully!
+ 📊 Spreadsheet: https://docs.google.com/spreadsheets/d/1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0/edit
+ ✅ Google Sheets API connected successfully!
+ 🎉 Multi-device sync READY!
+ ✅ Read 4 rows from branches
+ ✅ Fetched 3 branches
+ ✅ Branch loaded from server: TEMPLATE
+ 📡 Fetching settings for branch A336...
+ 📖 Reading from Google Sheets: branches
+ ✅ Read 4 rows from branches
+ 📖 Reading from Google Sheets: settings
+ ✅ Read 5 rows from settings
+ 🧹🧹🧹 FORCE CLEAR ALL CACHE BEFORE LOGIN 🧹🧹🧹
+ ✅ ALL CACHE CLEARED!
+ 
+ ✨✨✨ AUTO CLEAR CACHE ON LOGIN ✨✨✨
+ User: Ihsan
+ Branch: A336
+ Clearing ALL cache untuk dapat data terbaru...
+ 🧹 Clearing ALL caches...
+ ✅ Cleared 0 localStorage items
+ ✅ All caches cleared!
+ ✅ ALL cache cleared!
+ 🎉 Login dengan data fresh!
+ ====================================
+ 
+ 🎯 Filtering indicators for role: Advisor
+ 📊 Total indicators from backend: 0
+StaffDashboard.tsx:61 ℹ️ Backend indicators missing role field — using hardcoded defaults for role: Advisor
+ ✅ Hardcoded indicators loaded: 6
+ 🔄 Fetching indicators from API...
+ 
+ 🔍 ===== GET INDICATORS DEBUG =====
+ Branch ID: A336
+ Cache key: indicators_A336
+ 📡 Fetching indicators from Google Sheets (NO CACHE)...
+ 🔄 Fetching settings from API...
+ 📡 Fetching settings for branch A336...
+ Auto-save started (every 30s)
+ 📖 Reading from Google Sheets: indicators
+ 📖 Reading from Google Sheets: settings
+ 🎯 Filtering indicators for role: Advisor
+ 📊 Total indicators from backend: 0
+StaffDashboard.tsx:61 ℹ️ Backend indicators missing role field — using hardcoded defaults for role: Advisor
+ ✅ Hardcoded indicators loaded: 6
+ Auto-save stopped
+ Auto-save started (every 30s)
+ ✅ Read 5 rows from settings
+ ✅ Settings cached to localStorage
+ ✅ Read 17 rows from indicators
+ 📥 Total indicators from Sheets: 16
+ 🔍 Filtered for branch A336: 16 indicators
+ 📊 RAW Sales indicator dari Google Sheets:
+   - id: sales
+   - name: Sales
+   - targetValue (RAW string): 7000000
+   - targetValue type: string
+ ✅ PARSED Sales indicator:
+   - targetValue (parsed number): 7000000
+   - Full object: Object
+ ✅ Fetched 16 indicators for A336
+ ====================================
+ 
+ ✅ Indicators cached to localStorage
+ 🎯 Filtering indicators for role: Advisor
+ 📊 Total indicators from backend: 16
+ 🔍 DEBUG getIndicatorsByRole:
+    Role: Advisor
+    All indicators: Array(16)
+    Indicators with role field: Array(16)
+    Indicators without role field: Array(0)
+    Checking: Sales - role: "Advisor" === "Advisor" ? true
+    Checking: Trx - role: "Advisor" === "Advisor" ? true
+    Checking: Basket Size - role: "Advisor" === "Advisor" ? true
+    Checking: WA PERSONAL - role: "Advisor" === "Advisor" ? true
+    Checking: No Baru Customer - role: "Advisor" === "Advisor" ? true
+    Checking: After Sales Service - role: "Advisor" === "Advisor" ? true
+    Checking: Proteksi - role: "Advisor" === "Advisor" ? true
+    Checking: Google Review - role: "Advisor" === "Advisor" ? true
+    Checking: MGB - role: "Advisor" === "Advisor" ? true
+    Checking: Sales ID - role: "Cashier" === "Advisor" ? false
+    Checking: Transaksi - role: "Cashier" === "Advisor" ? false
+    Checking: New Member - role: "Cashier" === "Advisor" ? false
+    Checking: Instant Upgrade - role: "Cashier" === "Advisor" ? false
+    Checking: Greeting Customer - role: "CS" === "Advisor" ? false
+    Checking: Customer Service - role: "CS" === "Advisor" ? false
+    Checking: New Member - role: "CS" === "Advisor" ? false
+    ✅ Filtered result: 9 indicators
+ ✅ Filtered indicators for role Advisor : 9
+ 📋 Indicators: Array(9)
+/api/rev/IKtyw7JXDKucmeYmhwf9X2/code_snapshot/8bf9be49eedc257ea38a99bda234f78dde3b02d0a72b94e7f1c3e9d8c8febbd7:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+vendor-core-1830223d6f0ba72d.min.js.br:54 Failed to fetch snapshot files: w: XHR for "/api/rev/IKtyw7JXDKucmeYmhwf9X2/code_snapshot/8bf9be49eedc257ea38a99bda234f78dde3b02d0a72b94e7f1c3e9d8c8febbd7" failed with status 404
+    at P (6368-749c5e7ca59f7528.min.js.br:1417:11005)
+    at async Object.O [as get] (6368-749c5e7ca59f7528.min.js.br:1417:11387)
+    at async 1823-6495012c841a8f4f.min.js.br:3:6032
+    at async 1823-6495012c841a8f4f.min.js.br:8:24575
+    at async 6632-9c8feddd3c44ba3a.min.js.br:3:276
+    at async v (1823-6495012c841a8f4f.min.js.br:8:23995)
+    at async 1823-6495012c841a8f4f.min.js.br:8:10744
+(anonymous) @ vendor-core-1830223d6f0ba72d.min.js.br:54Understand this warning

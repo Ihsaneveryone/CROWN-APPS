@@ -1,0 +1,523 @@
+/**
+ * Google Apps Script - Crown Daily Indicators (MASTER) - FIXED VERSION
+ * Support: Multi-branch, Multi-spreadsheet, Role System
+ *
+ * MODE: NO GOOGLE DRIVE — foto thumbnail di-embed langsung di cell pakai insertImage().
+ *       Thumbnail 40×40 (low-res) sudah cukup untuk export ke Excel.
+ */
+
+const MASTER_SPREADSHEET_ID = '1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0';
+
+// Open target spreadsheet (payload or master)
+function openTargetSpreadsheet(payloadSpreadsheetId) {
+  var id = payloadSpreadsheetId && String(payloadSpreadsheetId).length > 10
+    ? payloadSpreadsheetId
+    : MASTER_SPREADSHEET_ID;
+  return SpreadsheetApp.openById(id);
+}
+
+// Extract indicator values
+function extractIndicatorValues(data) {
+  var values = {};
+  if (!data) return values;
+
+  if (Array.isArray(data)) {
+    for (var i = 0; i < data.length; i++) {
+      var ind = data[i];
+      if (ind && ind.id) {
+        values[ind.id] = ind.value != null ? ind.value : 0;
+      }
+    }
+  } else if (typeof data === 'object') {
+    var keys = Object.keys(data);
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var v = data[key];
+      values[key] = (v && typeof v === 'object') ? (v.value != null ? v.value : 0) : (v != null ? v : 0);
+    }
+  }
+  return values;
+}
+
+// Convert base64 data URI -> Blob
+function base64ToBlob(dataUri, filename) {
+  try {
+    var parts = dataUri.split(',');
+    if (parts.length < 2) return null;
+    var mimeType = parts[0].split(';')[0].split(':')[1] || 'image/jpeg';
+    var bytes = Utilities.base64Decode(parts[1]);
+    return Utilities.newBlob(bytes, mimeType, filename + '.jpg');
+  } catch (e) {
+    Logger.log('base64ToBlob error: ' + e.toString());
+    return null;
+  }
+}
+
+// Embed thumbnail langsung sebagai floating image di cell tertentu
+// row & col adalah 1-indexed (sesuai Sheets API)
+function embedThumbAt(sheet, dataUri, row, col, filename) {
+  if (!dataUri || typeof dataUri !== 'string') return false;
+  if (dataUri.indexOf('data:') !== 0) return false;
+
+  var blob = base64ToBlob(dataUri, filename);
+  if (!blob) return false;
+
+  try {
+    var img = sheet.insertImage(blob, col, row);
+    // Resize ke ukuran cell (~80×80 px)
+    img.setWidth(78);
+    img.setHeight(78);
+    // Anchor offset supaya rapi di dalam cell
+    img.setAnchorCellXOffset(2);
+    img.setAnchorCellYOffset(2);
+    return true;
+  } catch (e) {
+    Logger.log('insertImage error: ' + e.toString());
+    return false;
+  }
+}
+
+// doGet handler
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: 'ok',
+      message: 'Crown Daily Indicators API - Master',
+      timestamp: new Date().toISOString()
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// doPost handler
+function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action;
+    if (!action) throw new Error('Missing action');
+
+    var result;
+    var targetSpreadsheetId = params.spreadsheetId || null;
+
+    if (action === 'addSubmission') {
+      if (!params.data) throw new Error('Missing data');
+      result = addSubmission(params.data, targetSpreadsheetId);
+    } else if (action === 'updateSettings') {
+      result = updateSettings(params.data, targetSpreadsheetId);
+    } else if (action === 'updateIndicators') {
+      result = updateIndicators(params.data, targetSpreadsheetId);
+    } else if (action === 'deleteSubmission') {
+      result = deleteSubmission(params.data, targetSpreadsheetId);
+    } else if (action === 'deleteSubmissions') {
+      result = deleteSubmissions(params.data, targetSpreadsheetId);
+    } else if (action === 'updateBranchAdmin') {
+      result = updateBranchAdmin(params.data);
+    } else if (action === 'createBranch') {
+      if (!params.data) throw new Error('Missing data');
+      result = createBranch(params.data);
+    } else if (action === 'getIndicators') {
+      result = getIndicators(targetSpreadsheetId);
+    } else if (action === 'getSettings') {
+      result = getSettings(params.branchId, targetSpreadsheetId);
+    } else {
+      throw new Error('Invalid action: ' + action);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true, data: result, timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('doPost error: ' + error.toString());
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: error.toString(), timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Add submission
+function addSubmission(submission, spreadsheetId) {
+  try {
+    Logger.log('addSubmission: ' + submission.id);
+
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('submissions');
+    if (!sheet) throw new Error('Sheet submissions not found');
+
+    var userRole = '';
+    if (submission.user && submission.user.role) {
+      userRole = String(submission.user.role);
+    }
+
+    var indValues = extractIndicatorValues(submission.data);
+
+    // Thumbnails per indicator (40x40 base64 data URI dari frontend)
+    var thumbs = submission.photosThumbs || {};
+
+    var notesStr = '';
+    var reason = '';
+    var approval = '';
+    var adminNik = '';
+    var adminNama = '';
+
+    if (submission.notes && typeof submission.notes === 'object') {
+      reason = submission.notes.reason || '';
+      approval = submission.notes.approval || '';
+      adminNik = submission.notes.adminNik || '';
+      adminNama = submission.notes.adminNama || '';
+      notesStr = JSON.stringify(submission.notes);
+    } else if (submission.notes) {
+      notesStr = String(submission.notes);
+    }
+
+    var dataStr = '';
+    if (submission.data) {
+      dataStr = JSON.stringify(submission.data);
+    }
+
+    var rowData = new Array(36);
+
+    rowData[0] = submission.id || '';
+    rowData[1] = submission.branchId || '';
+    rowData[2] = submission.user ? (submission.user.nik || '') : '';
+    rowData[3] = submission.user ? (submission.user.nama || '') : '';
+    rowData[4] = userRole;
+    rowData[5] = submission.date || '';
+    rowData[6] = submission.createdAt || new Date().toISOString();
+    rowData[7] = submission.totalScore || 0;
+
+    rowData[8] = dataStr;
+    rowData[9] = '';  // photos column - kosong, foto di-embed sebagai floating image
+    rowData[10] = notesStr;
+
+    rowData[11] = indValues['wa_personal'] != null ? indValues['wa_personal'] : 0;
+    rowData[12] = indValues['no_baru'] != null ? indValues['no_baru'] : 0;
+    rowData[13] = indValues['after_sales'] != null ? indValues['after_sales'] : 0;
+    rowData[14] = indValues['proteksi'] != null ? indValues['proteksi'] : 0;
+    rowData[15] = indValues['google_review'] != null ? indValues['google_review'] : 0;
+    rowData[16] = indValues['mgb'] != null ? indValues['mgb'] : 0;
+
+    rowData[17] = '';  // photos2 - kosong
+    rowData[18] = notesStr;
+    rowData[19] = indValues['proteksi'] != null ? indValues['proteksi'] : 0;
+    rowData[20] = indValues['google_review'] != null ? indValues['google_review'] : 0;
+    rowData[21] = indValues['mgb'] != null ? indValues['mgb'] : 0;
+
+    // MGB Foto 1/2/3 (kolom 23, 24, 25 dalam 1-indexed) — di-fill dengan insertImage di bawah
+    rowData[22] = '';
+    rowData[23] = '';
+    rowData[24] = '';
+
+    rowData[25] = reason;
+    rowData[26] = approval;
+    rowData[27] = adminNik;
+    rowData[28] = adminNama;
+
+    rowData[29] = indValues['cashier-sales-id'] != null ? indValues['cashier-sales-id'] : 0;
+    rowData[30] = indValues['cashier-trx'] != null ? indValues['cashier-trx'] : 0;
+    rowData[31] = indValues['cashier-new-member'] != null ? indValues['cashier-new-member'] : 0;
+    rowData[32] = indValues['cashier-instant-upgrade'] != null ? indValues['cashier-instant-upgrade'] : 0;
+
+    rowData[33] = indValues['cs-greeting'] != null ? indValues['cs-greeting'] : 0;
+    rowData[34] = indValues['cs-service'] != null ? indValues['cs-service'] : 0;
+    rowData[35] = indValues['cs-new-member'] != null ? indValues['cs-new-member'] : 0;
+
+    var targetRow = sheet.getLastRow() + 1;
+    sheet.getRange(targetRow, 1, 1, rowData.length).setValues([rowData]);
+
+    // Set row height supaya thumbnail kelihatan
+    sheet.setRowHeight(targetRow, 80);
+
+    // 🖼️ Embed MGB photos sebagai floating image di kolom 23, 24, 25 (1-indexed)
+    var mgbThumbs = thumbs['mgb'] || [];
+    var embeddedCount = 0;
+    for (var p = 0; p < Math.min(3, mgbThumbs.length); p++) {
+      var ok = embedThumbAt(sheet, mgbThumbs[p], targetRow, 23 + p, (submission.id || 'sub') + '_mgb_' + p);
+      if (ok) embeddedCount++;
+    }
+
+    Logger.log('Row ' + targetRow + ' appended. Embedded ' + embeddedCount + ' MGB photos.');
+
+    return { id: submission.id, success: true, embeddedPhotos: embeddedCount };
+
+  } catch (error) {
+    Logger.log('addSubmission error: ' + error.toString());
+    throw error;
+  }
+}
+
+// Update settings
+function updateSettings(data, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('settings');
+  if (!sheet) throw new Error('Sheet settings not found');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.branchId) {
+      sheet.getRange(i + 1, 1, 1, 6).setValues([[
+        data.branchId,
+        data.loginTitle || '',
+        data.loginSubtitle || '',
+        data.minScore || data.minSubmitScore || 80,
+        values[i][4],
+        new Date().toISOString()
+      ]]);
+      return { success: true };
+    }
+  }
+  sheet.appendRow([
+    data.branchId,
+    data.loginTitle || '',
+    data.loginSubtitle || '',
+    data.minScore || data.minSubmitScore || 80,
+    new Date().toISOString(),
+    new Date().toISOString()
+  ]);
+  return { success: true };
+}
+
+// Update indicators
+function updateIndicators(data, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('indicators');
+  if (!sheet) throw new Error('Sheet indicators not found');
+
+  sheet.clear();
+
+  var headers = ['branchId', 'roleId', 'id', 'name', 'type', 'targetValue', 'targetPhotos', 'weight', 'icon', 'createdAt', 'role'];
+  sheet.appendRow(headers);
+
+  if (Array.isArray(data)) {
+    for (var i = 0; i < data.length; i++) {
+      var ind = data[i];
+      sheet.appendRow([
+        ind.branchId || '',
+        ind.roleId || '',
+        ind.id || '',
+        ind.name || '',
+        ind.type || 'number',
+        ind.targetValue || '',
+        ind.targetPhotos || '',
+        ind.weight || 0,
+        ind.icon || 'Target',
+        ind.createdAt || new Date().toISOString(),
+        ind.role || ''
+      ]);
+    }
+  }
+
+  return { success: true };
+}
+
+// Delete submission (single)
+function deleteSubmission(data, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) throw new Error('Sheet submissions not found');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.id) {
+      sheet.deleteRow(i + 1);
+      return { success: true, deleted: data.id };
+    }
+  }
+  throw new Error('Submission not found: ' + data.id);
+}
+
+// Delete submissions (bulk)
+function deleteSubmissions(data, spreadsheetId) {
+  var ids = (data && Array.isArray(data.ids)) ? data.ids : [];
+  if (ids.length === 0) return { success: true, deleted: 0 };
+
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) throw new Error('Sheet submissions not found');
+
+  var values = sheet.getDataRange().getValues();
+  var idSet = {};
+  for (var k = 0; k < ids.length; k++) idSet[String(ids[k])] = true;
+
+  var deleted = 0;
+  for (var i = values.length - 1; i >= 1; i--) {
+    if (idSet[String(values[i][0])]) {
+      sheet.deleteRow(i + 1);
+      deleted++;
+    }
+  }
+  return { success: true, deleted: deleted };
+}
+
+// Update branch admin (di master branches sheet)
+function updateBranchAdmin(data) {
+  if (!data || !data.branchId) throw new Error('Missing branchId');
+
+  var master = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = master.getSheetByName('branches');
+  if (!sheet) throw new Error('Sheet branches not found');
+
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0];
+  var idCol = headers.indexOf('id');
+  var adminNameCol = headers.indexOf('adminName');
+  var lastNameChangeCol = headers.indexOf('lastNameChange');
+
+  if (idCol === -1) throw new Error('Column "id" not found in branches sheet');
+
+  if (adminNameCol === -1) {
+    headers.push('adminName');
+    adminNameCol = headers.length - 1;
+    sheet.getRange(1, adminNameCol + 1).setValue('adminName');
+  }
+  if (lastNameChangeCol === -1) {
+    headers.push('lastNameChange');
+    lastNameChangeCol = headers.length - 1;
+    sheet.getRange(1, lastNameChangeCol + 1).setValue('lastNameChange');
+  }
+
+  for (var i = 1; i < values.length; i++) {
+    if (String(values[i][idCol]) === String(data.branchId)) {
+      sheet.getRange(i + 1, adminNameCol + 1).setValue(data.adminName || '');
+      sheet.getRange(i + 1, lastNameChangeCol + 1).setValue(data.lastNameChange || new Date().toISOString());
+      return { success: true, branchId: data.branchId };
+    }
+  }
+  throw new Error('Branch not found: ' + data.branchId);
+}
+
+// Create branch
+function createBranch(data) {
+  if (!data || !data.id) throw new Error('Missing branch.id');
+  if (!data.spreadsheetId) throw new Error('Missing branch.spreadsheetId');
+
+  var master = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = master.getSheetByName('branches');
+  if (!sheet) throw new Error('Sheet branches not found');
+
+  var headerRange = sheet.getRange(1, 1, 1, sheet.getLastColumn());
+  var headers = headerRange.getValues()[0];
+  var sidIdx = headers.indexOf('spreadsheetId');
+  if (sidIdx === -1) {
+    headers.push('spreadsheetId');
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sidIdx = headers.length - 1;
+  }
+
+  var idCol = headers.indexOf('id');
+  if (idCol >= 0) {
+    var existing = sheet.getRange(2, idCol + 1, Math.max(1, sheet.getLastRow() - 1), 1).getValues();
+    for (var i = 0; i < existing.length; i++) {
+      if (String(existing[i][0]).trim() === String(data.id).trim()) {
+        throw new Error('Branch id already exists: ' + data.id);
+      }
+    }
+  }
+
+  var row = headers.map(function (h) {
+    if (h === 'createdAt') return data.createdAt || new Date().toISOString();
+    return data[h] != null ? data[h] : '';
+  });
+  sheet.appendRow(row);
+
+  try {
+    ensureBranchSheets(data.spreadsheetId);
+  } catch (e) {
+    Logger.log('ensureBranchSheets warning: ' + e.toString());
+  }
+
+  return { success: true, id: data.id, spreadsheetId: data.spreadsheetId };
+}
+
+// Get indicators
+function getIndicators(spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('indicators');
+  if (!sheet) return [];
+
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  var indicators = [];
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    if (!row[2]) continue;
+
+    indicators.push({
+      id: row[2] || '',
+      name: row[3] || '',
+      type: row[4] || 'number',
+      targetValue: row[5] || undefined,
+      targetPhotos: row[6] || undefined,
+      weight: row[7] || 0,
+      icon: row[8] || 'Target',
+      role: row[10] || undefined
+    });
+  }
+
+  return indicators;
+}
+
+// Get settings
+function getSettings(branchId, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('settings');
+  if (!sheet) {
+    return {
+      loginTitle: 'CROWN | DAILY INDICATORS',
+      loginSubtitle: 'Silakan masuk dengan NIK dan Nama Anda',
+      minSubmitScore: 80
+    };
+  }
+
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === branchId) {
+      return {
+        branchId: data[i][0],
+        loginTitle: data[i][1] || '',
+        loginSubtitle: data[i][2] || '',
+        minSubmitScore: data[i][3] || 80
+      };
+    }
+  }
+
+  return {
+    loginTitle: 'CROWN | DAILY INDICATORS',
+    loginSubtitle: 'Silakan masuk dengan NIK dan Nama Anda',
+    minSubmitScore: 80
+  };
+}
+
+// Ensure branch sheets
+function ensureBranchSheets(spreadsheetId) {
+  if (!spreadsheetId || spreadsheetId === MASTER_SPREADSHEET_ID) return;
+  var ss = SpreadsheetApp.openById(spreadsheetId);
+
+  var SUBMISSIONS_HEADER = [
+    'id','branchId','userNik','userName','userRole','date','createdAt','totalScore',
+    'data','photos','notes',
+    'wa_personal','no_baru','after_sales','proteksi','google_review','mgb',
+    'photos2','notes2','Proteksi','Google Review','MGB',
+    'MGB Foto 1','MGB Foto 2','MGB Foto 3',
+    'Reason','Approval','Admin NIK','Admin Nama',
+    'cashier-sales-id','cashier-trx','cashier-new-member','cashier-instant-upgrade',
+    'cs-greeting','cs-service','cs-new-member'
+  ];
+  var INDICATORS_HEADER = ['branchId','roleId','id','name','type','targetValue','targetPhotos','weight','icon','createdAt','role'];
+  var SETTINGS_HEADER = ['branchId','loginTitle','loginSubtitle','minScore','createdAt','updatedAt'];
+
+  var defs = [
+    { name: 'submissions', header: SUBMISSIONS_HEADER },
+    { name: 'indicators', header: INDICATORS_HEADER },
+    { name: 'settings', header: SETTINGS_HEADER }
+  ];
+
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    var sh = ss.getSheetByName(def.name);
+    if (!sh) {
+      sh = ss.insertSheet(def.name);
+      sh.getRange(1, 1, 1, def.header.length).setValues([def.header]);
+    }
+  }
+}

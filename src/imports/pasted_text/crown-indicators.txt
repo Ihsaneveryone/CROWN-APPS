@@ -1,0 +1,363 @@
+/**
+ * Google Apps Script - Crown Daily Indicators
+ *
+ * DEPLOYMENT SETTINGS:
+ * - Execute as: Me
+ * - Who has access: Anyone
+ *
+ * STRUKTUR KOLOM submissions (update header row di spreadsheet!):
+ * A:id | B:branchId | C:userNik | D:userName | E:date | F:createdAt | G:totalScore
+ * H:sales | I:trx | J:basket | K:wa_personal | L:no_baru | M:after_sales
+ * N:proteksi | O:google_review | P:mgb | Q:photos | R:notes
+ */
+
+const SPREADSHEET_ID = '1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0';
+
+// Opsional: isi dengan ID folder Google Drive untuk simpan foto sebagai URL
+// Kosongkan ('') jika tidak pakai → foto tidak disimpan (tapi data tetap tersimpan)
+const GDRIVE_FOLDER_ID = '';
+
+// Urutan indikator (sesuai urutan kolom H-P di spreadsheet)
+var INDICATOR_ORDER = ['sales', 'trx', 'basket', 'wa_personal', 'no_baru', 'after_sales', 'proteksi', 'google_review', 'mgb'];
+
+// ─── Helper: ekstrak nilai per indikator dari data submission ─────────────────
+function extractIndicatorValues(data) {
+  var values = {};
+  if (!data) return values;
+
+  if (Array.isArray(data)) {
+    // Format: [{id:'sales', value:6408950}, ...]
+    for (var i = 0; i < data.length; i++) {
+      var ind = data[i];
+      if (ind && ind.id) {
+        values[ind.id] = ind.value != null ? ind.value : 0;
+      }
+    }
+  } else if (typeof data === 'object') {
+    // Format: {sales: {value:6408950}, ...} atau {sales: 6408950, ...}
+    var keys = Object.keys(data);
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var v = data[key];
+      values[key] = (v && typeof v === 'object') ? (v.value != null ? v.value : 0) : (v != null ? v : 0);
+    }
+  }
+  return values;
+}
+
+// ─── Helper: upload base64 ke Google Drive, kembalikan URL ───────────────────
+function uploadBase64ToDrive(base64Data, filename) {
+  if (!GDRIVE_FOLDER_ID) return null;
+  try {
+    var parts = base64Data.split(',');
+    if (parts.length < 2) return null;
+    var mimeType = parts[0].split(';')[0].split(':')[1] || 'image/jpeg';
+    var bytes = Utilities.base64Decode(parts[1]);
+    var blob = Utilities.newBlob(bytes, mimeType, filename + '.jpg');
+    var folder = DriveApp.getFolderById(GDRIVE_FOLDER_ID);
+    var file = folder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return 'https://drive.google.com/uc?id=' + file.getId();
+  } catch (e) {
+    Logger.log('Drive upload error: ' + e.toString());
+    return null;
+  }
+}
+
+// ─── Helper: konversi foto ke URL Drive (strip base64) ───────────────────────
+function processPhotos(photos, submissionId) {
+  if (!photos || typeof photos !== 'object') return '';
+  var urlMap = {};
+  var keys = Object.keys(photos);
+  for (var ki = 0; ki < keys.length; ki++) {
+    var indicatorId = keys[ki];
+    var photoList = photos[indicatorId];
+    if (!Array.isArray(photoList) || photoList.length === 0) continue;
+    var urls = [];
+    for (var i = 0; i < photoList.length; i++) {
+      var photo = photoList[i];
+      if (typeof photo !== 'string') continue;
+      if (photo.startsWith('http')) {
+        urls.push(photo);
+      } else if (photo.startsWith('data:') && GDRIVE_FOLDER_ID) {
+        var url = uploadBase64ToDrive(photo, submissionId + '_' + indicatorId + '_' + i);
+        if (url) urls.push(url);
+      }
+      // base64 tanpa Drive → diabaikan (terlalu besar)
+    }
+    if (urls.length > 0) urlMap[indicatorId] = urls;
+  }
+  return Object.keys(urlMap).length > 0 ? JSON.stringify(urlMap) : '';
+}
+
+// ─── doGet ────────────────────────────────────────────────────────────────────
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: 'ok',
+      message: 'Crown Daily Indicators API is running!',
+      timestamp: new Date().toISOString()
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ─── doPost ───────────────────────────────────────────────────────────────────
+function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action;
+    if (!action) throw new Error('Missing "action"');
+
+    var result;
+    switch (action) {
+      case 'addSubmission':
+        if (!params.data) throw new Error('Missing "data"');
+        result = addSubmission(params.data);
+        break;
+      case 'updateSettings':
+        result = updateSettings(params.data);
+        break;
+      case 'deleteSubmission':
+        result = deleteSubmission(params.data);
+        break;
+      default:
+        throw new Error('Invalid action: ' + action);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true, data: result, timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('doPost error: ' + error.toString());
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: error.toString(), timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ─── addSubmission ────────────────────────────────────────────────────────────
+/**
+ * Menyimpan submission dengan SATU NILAI PER KOLOM.
+ *
+ * Kolom H–P = nilai tiap indikator (angka kecil, max ~10 karakter per cell)
+ * Kolom Q   = foto (URL Drive saja, max ~100 karakter per foto)
+ * Kolom R   = notes
+ *
+ * Tidak ada lagi JSON besar di satu cell!
+ */
+function addSubmission(submission) {
+  try {
+    Logger.log('addSubmission: ' + submission.id);
+
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = ss.getSheetByName('submissions');
+    if (!sheet) throw new Error('Sheet "submissions" not found!');
+
+    // Ekstrak nilai per indikator
+    var indValues = extractIndicatorValues(submission.data);
+
+    // Proses foto → URL Drive saja (strip base64)
+    var photosStr = processPhotos(submission.photos || {}, submission.id || 'sub');
+    Logger.log('Photos stored: ' + photosStr.length + ' chars');
+
+    // Notes
+    var notesStr = '';
+    if (submission.notes && typeof submission.notes === 'object') {
+      notesStr = JSON.stringify(submission.notes);
+    } else if (submission.notes) {
+      notesStr = String(submission.notes);
+    }
+
+    // Row: A–G = metadata, H–P = indikator, Q = foto, R = notes
+    var rowData = [
+      submission.id || '',                                          // A: id
+      submission.branchId || '',                                    // B: branchId
+      submission.user ? (submission.user.nik || '') : '',           // C: userNik
+      submission.user ? (submission.user.nama || '') : '',          // D: userName
+      submission.date || '',                                        // E: date
+      submission.createdAt || new Date().toISOString(),             // F: createdAt
+      submission.totalScore || 0,                                   // G: totalScore
+      indValues['sales']          != null ? indValues['sales']          : 0,  // H
+      indValues['trx']            != null ? indValues['trx']            : 0,  // I
+      indValues['basket']         != null ? indValues['basket']         : 0,  // J
+      indValues['wa_personal']    != null ? indValues['wa_personal']    : 0,  // K
+      indValues['no_baru']        != null ? indValues['no_baru']        : 0,  // L
+      indValues['after_sales']    != null ? indValues['after_sales']    : 0,  // M
+      indValues['proteksi']       != null ? indValues['proteksi']       : 0,  // N
+      indValues['google_review']  != null ? indValues['google_review']  : 0,  // O
+      indValues['mgb']            != null ? indValues['mgb']            : 0,  // P
+      photosStr,                                                    // Q: photos (URL saja)
+      notesStr                                                      // R: notes
+    ];
+
+    sheet.appendRow(rowData);
+    Logger.log('Row appended. Max cell size: ' + photosStr.length + ' chars (photos)');
+
+    return { id: submission.id, success: true };
+
+  } catch (error) {
+    Logger.log('addSubmission error: ' + error.toString());
+    throw error;
+  }
+}
+
+// ─── updateSettings ───────────────────────────────────────────────────────────
+function updateSettings(data) {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('settings');
+  if (!sheet) throw new Error('Sheet "settings" not found!');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.branchId) {
+      sheet.getRange(i + 1, 1, 1, 6).setValues([[
+        data.branchId,
+        data.loginTitle || '',
+        data.loginSubtitle || '',
+        data.minScore || 80,
+        values[i][4],
+        new Date().toISOString()
+      ]]);
+      return { success: true };
+    }
+  }
+  sheet.appendRow([data.branchId, data.loginTitle || '', data.loginSubtitle || '', data.minScore || 80, new Date().toISOString(), new Date().toISOString()]);
+  return { success: true };
+}
+
+// ─── deleteSubmission ─────────────────────────────────────────────────────────
+function deleteSubmission(data) {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) throw new Error('Sheet "submissions" not found!');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.id) {
+      sheet.deleteRow(i + 1);
+      return { success: true, deleted: data.id };
+    }
+  }
+  throw new Error('Submission not found: ' + data.id);
+}
+
+// ─── MIGRASI DATA LAMA ────────────────────────────────────────────────────────
+/**
+ * Jalankan SEKALI untuk migrasi data lama ke format kolom per indikator.
+ *
+ * Cara pakai di Apps Script Editor:
+ *   1. Pilih fungsi "migrateToColumnsFormat" dari dropdown
+ *   2. Klik ▶ Run
+ *   3. Cek Execution Log untuk progress
+ *
+ * PENTING: Backup spreadsheet dulu sebelum menjalankan!
+ *
+ * Yang dilakukan:
+ *   - Baca kolom H (data JSON lama) → pecah ke kolom H-P per indikator
+ *   - Kolom I (foto base64) → pindah ke kolom Q, hapus base64
+ *   - Update header row menjadi format baru
+ */
+function migrateToColumnsFormat() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) { Logger.log('Sheet tidak ditemukan!'); return; }
+
+  var lastRow = sheet.getLastRow();
+  var lastCol = sheet.getLastColumn();
+  Logger.log('Total baris: ' + lastRow + ', Total kolom: ' + lastCol);
+
+  if (lastRow < 1) { Logger.log('Sheet kosong.'); return; }
+
+  // ── Step 1: Update header row ──────────────────────────────────────────────
+  var newHeaders = [
+    'id', 'branchId', 'userNik', 'userName', 'date', 'createdAt', 'totalScore',
+    'sales', 'trx', 'basket', 'wa_personal', 'no_baru', 'after_sales',
+    'proteksi', 'google_review', 'mgb', 'photos', 'notes'
+  ];
+  // Pastikan ada cukup kolom
+  if (lastCol < newHeaders.length) {
+    sheet.insertColumnsAfter(lastCol, newHeaders.length - lastCol);
+  }
+  sheet.getRange(1, 1, 1, newHeaders.length).setValues([newHeaders]);
+  Logger.log('Header row updated: ' + newHeaders.join(' | '));
+
+  // ── Step 2: Migrasi tiap baris data ───────────────────────────────────────
+  var migrated = 0, skipped = 0, errors = 0;
+
+  for (var row = 2; row <= lastRow; row++) {
+    try {
+      var rowVals = sheet.getRange(row, 1, 1, Math.max(lastCol, 18)).getValues()[0];
+
+      var colH = String(rowVals[7] || '');  // H: data (lama)
+      var colI = String(rowVals[8] || '');  // I: photos (lama)
+
+      // Cek apakah sudah format baru (kolom H berisi angka, bukan JSON)
+      var alreadyMigrated = colH !== '' && !colH.startsWith('[') && !colH.startsWith('{');
+      if (alreadyMigrated) { skipped++; continue; }
+
+      // Parse data lama dari kolom H
+      var indValues = {};
+      if (colH.startsWith('[') || colH.startsWith('{')) {
+        try {
+          indValues = extractIndicatorValues(JSON.parse(colH));
+        } catch (e) {
+          Logger.log('Row ' + row + ': gagal parse data - ' + e);
+        }
+      }
+
+      // Parse foto lama dari kolom I → ambil URL saja, buang base64
+      var photosStr = '';
+      if (colI && colI !== '') {
+        try {
+          var parsedPhotos = JSON.parse(colI);
+          var urlMap = {};
+          var pKeys = Object.keys(parsedPhotos);
+          for (var pk = 0; pk < pKeys.length; pk++) {
+            var pid = pKeys[pk];
+            var pList = parsedPhotos[pid];
+            if (Array.isArray(pList)) {
+              var urls = pList.filter(function(p) { return typeof p === 'string' && p.startsWith('http'); });
+              if (urls.length > 0) urlMap[pid] = urls;
+            }
+          }
+          if (Object.keys(urlMap).length > 0) photosStr = JSON.stringify(urlMap);
+        } catch (e) { /* foto lama tidak bisa di-recover */ }
+      }
+
+      // Notes dari kolom lama (jika ada, bisa di index 9+)
+      var notesStr = String(rowVals[9] || '');
+
+      // Tulis format baru: kolom H-P = nilai indikator, Q = foto, R = notes
+      var newRowPart = [
+        indValues['sales']         != null ? indValues['sales']         : 0,
+        indValues['trx']           != null ? indValues['trx']           : 0,
+        indValues['basket']        != null ? indValues['basket']        : 0,
+        indValues['wa_personal']   != null ? indValues['wa_personal']   : 0,
+        indValues['no_baru']       != null ? indValues['no_baru']       : 0,
+        indValues['after_sales']   != null ? indValues['after_sales']   : 0,
+        indValues['proteksi']      != null ? indValues['proteksi']      : 0,
+        indValues['google_review'] != null ? indValues['google_review'] : 0,
+        indValues['mgb']           != null ? indValues['mgb']           : 0,
+        photosStr,
+        notesStr
+      ];
+      sheet.getRange(row, 8, 1, newRowPart.length).setValues([newRowPart]);
+
+      migrated++;
+      Logger.log('Row ' + row + ' ✓ — data ' + colH.length + ' chars → ' + JSON.stringify(indValues));
+
+      if (row % 20 === 0) Utilities.sleep(300);
+
+    } catch (e) {
+      errors++;
+      Logger.log('Row ' + row + ' ERROR: ' + e.toString());
+    }
+  }
+
+  Logger.log('=== MIGRASI SELESAI ===');
+  Logger.log('Berhasil : ' + migrated + ' baris');
+  Logger.log('Dilewati : ' + skipped + ' baris (sudah format baru)');
+  Logger.log('Error    : ' + errors + ' baris');
+  Logger.log('Sekarang setiap cell jauh di bawah 50.000 karakter!');
+}

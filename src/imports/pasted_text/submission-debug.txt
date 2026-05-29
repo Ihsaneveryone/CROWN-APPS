@@ -1,0 +1,215 @@
+💾 ===== SAVING TO CACHE =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache Key: submissions_A336_1_999999_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Submissions to cache: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache data size: 1242 bytes
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Cache saved successfully!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Verified count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ==============================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 5 rows from settings
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Settings cached to localStorage
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 17 rows from indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📥 Total indicators from Sheets: 16
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 Filtered for branch A336: 16 indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 RAW Sales indicator dari Google Sheets:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - id: sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - name: Sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (RAW string): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue type: string
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ PARSED Sales indicator:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (parsed number): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - Full object: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 16 indicators for A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Indicators cached to localStorage
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 5 rows from settings
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Settings cached to localStorage
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 3 rows from submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 2/2 submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⚡ Server response time: 761.20ms
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 ===== SERVER RESPONSE DEBUG =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Expected NIK filter: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Received submissions: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📋 ALL SUBMISSIONS FROM SERVER:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   [1] NIK: 191924 | Nama: Ihsan | Date: 2026-05-28 | ID: A336_191924_1779982698806
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   [2] NIK: 191924 | Nama: IHSAN | Date: 2026-05-28 | ID: A336_191924_1779982440287
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Matching submissions: 2/2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Backend sudah filter by NIK dengan benar!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 💾 ===== SAVING TO CACHE =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache Key: submissions_A336_1_999999_191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Submissions to cache: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache data size: 1242 bytes
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Cache saved successfully!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Verified count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ==============================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 useSubmissions Hook Debug:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Filter NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Enabled: true
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Query status: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Submissions count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Sample: Object
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 ===== RIWAYAT DISPLAY =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User Role: USER 👤
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Total submissions from server: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Backend filter working - received only user data
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🛡️ ===== FRONTEND FILTER (PRIVACY PROTECTION) =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Total submissions from server: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ After NIK filter: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🗑️ Filtered out: 0 submissions dari user lain
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📅 DATE FILTER: TIDAK AKTIF
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ User akan melihat SEMUA data mereka (tidak ada batasan 5 hari!)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📅 Data range:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Oldest: 28/5/2026
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Newest: 28/5/2026
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Total days: 0
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 USER MODE: Load More Pattern (Initial: 10, Increment: +10)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📦 Total data user ini (after filter): 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📋 Currently displaying: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ➕ Has more data: false
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ===================================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔥🔥🔥 ===== RIWAYAT DIBUKA ===== 🔥🔥🔥
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User Role: 👤 USER
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 User Nama: Ihsan
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 Filter Mode: FILTERED by NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 DATA RECEIVED:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Total submissions: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Loading: false
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Fetching: false
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    Error: false
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📋 ALL SUBMISSIONS RECEIVED:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    [1] ID: A336_191924_1779982698806
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Nama: Ihsan
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Date: 2026-05-28
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        CreatedAt: 2026-05-28T15:38:18.804Z
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Score: 10
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66    [2] ID: A336_191924_1779982440287
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Nama: IHSAN
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Date: 2026-05-28
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        CreatedAt: 2026-05-28T15:34:00.286Z
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66        Score: 60
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ============================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 useSubmissions Hook Debug:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Filter NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Enabled: true
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Query status: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Submissions count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Sample: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 17 rows from indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📥 Total indicators from Sheets: 16
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 Filtered for branch A336: 16 indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 RAW Sales indicator dari Google Sheets:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - id: sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - name: Sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (RAW string): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue type: string
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ PARSED Sales indicator:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (parsed number): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - Full object: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 16 indicators for A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Indicators cached to localStorage
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 useSubmissions Hook Debug:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Filter NIK: 191924
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Enabled: true
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Query status: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Submissions count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   Sample: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Auto-save stopped
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⚡ Cache HIT: settings_A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🧹🧹🧹 FORCE CLEAR ALL CACHE BEFORE LOGIN 🧹🧹🧹
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ ALL CACHE CLEARED!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching branches from Google Sheets...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 4 rows from branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 3 branches
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✨✨✨ AUTO CLEAR CACHE ON LOGIN ✨✨✨
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 User: MGR AZKO
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Branch: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Clearing ALL cache untuk dapat data terbaru...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🧹 Clearing ALL caches...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Cleared 1 localStorage items
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ All caches cleared!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ ALL cache cleared!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🎉 Login dengan data fresh!
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+2code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔥 ===== ADMIN HISTORY LOADING =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 👤 Admin loading ALL submissions...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching from server...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⏱️ Timeout: 15 seconds (cold start bisa 5-10 detik)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📄 Page: 1 | Items per page: 50
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔽 Sort: date (desc)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching submissions for branch A336...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 ===== GET INDICATORS DEBUG =====
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Branch ID: A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 Cache key: indicators_A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching indicators from Google Sheets (NO CACHE)...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Loading ALL submissions for statistics...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📡 Fetching submissions for branch A336...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📖 Reading from Google Sheets: submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 17 rows from indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📥 Total indicators from Sheets: 16
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 Filtered for branch A336: 16 indicators
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 RAW Sales indicator dari Google Sheets:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - id: sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - name: Sales
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (RAW string): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue type: string
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ PARSED Sales indicator:
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - targetValue (parsed number): 7000000
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66   - Full object: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 16 indicators for A336
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ====================================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 3 rows from submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 2/2 submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Server response: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📋 Submissions count: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Admin submissions loaded: 2 (cache disabled - too large)
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📊 Pagination info: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ============================
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Read 3 rows from submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 2/2 submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Loaded 2 submissions for statistics
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📥 Fetching ALL submissions for export...
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ⚡ Cache HIT: submissions_A336_all_1_999999
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 ✅ Fetched 2 total submissions
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 🔍 EXCEL EXPORT DEBUG - Total submissions: 2
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📸 Submission 1: Object
+code_components_preview_iframe-aa58e63176ce1011.min.js.br:66 📸 Submission 2: Object

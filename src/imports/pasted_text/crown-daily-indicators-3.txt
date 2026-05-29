@@ -1,0 +1,527 @@
+/**
+ * Google Apps Script - Crown Daily Indicators
+ * ✅ FINAL VERSION: Role System (REAL - Sesuai Struktur Existing)
+ *
+ * DEPLOYMENT SETTINGS:
+ * - Execute as: Me
+ * - Who has access: Anyone
+ *
+ * STRUKTUR KOLOM submissions:
+ * - A-AC: Existing 29 kolom (TIDAK DIUBAH!)
+ * - AD-AJ: Kolom baru untuk Cashier & CS (7 kolom)
+ * - TOTAL: 36 kolom (A-AJ)
+ *
+ * EXISTING (29 kolom A-AC):
+ * A:id | B:branchId | C:userNik | D:userName | E:userRole | F:date | G:createdAt | H:totalScore
+ * I:data | J:photos | K:notes
+ * L:wa_personal | M:no_baru | N:after_sales | O:proteksi | P:google_review | Q:mgb
+ * R:photos | S:notes | T:Proteksi | U:Google Review | V:MGB
+ * W:MGB Foto 1 | X:MGB Foto 2 | Y:MGB Foto 3
+ * Z:Reason | AA:Approval | AB:Admin NIK | AC:Admin Nama
+ *
+ * NEW (7 kolom AD-AJ):
+ * AD:cashier-sales-id | AE:cashier-trx | AF:cashier-new-member | AG:cashier-instant-upgrade
+ * AH:cs-greeting | AI:cs-service | AJ:cs-new-member
+ */
+
+// MASTER spreadsheet — berisi tab `branches` (registry semua cabang).
+// Branch baru bisa pakai spreadsheet sendiri; ID-nya dikirim via payload.spreadsheetId
+const MASTER_SPREADSHEET_ID = '1pPxEAmBzR4vq3AiXyEQ4JqMe3pT4KyenLLiosuF-aU0';
+const SPREADSHEET_ID = MASTER_SPREADSHEET_ID; // backward compat
+
+// Buka spreadsheet — utamakan ID dari payload, fallback ke master
+function openTargetSpreadsheet(payloadSpreadsheetId) {
+  var id = payloadSpreadsheetId && String(payloadSpreadsheetId).length > 10
+    ? payloadSpreadsheetId
+    : MASTER_SPREADSHEET_ID;
+  return SpreadsheetApp.openById(id);
+}
+
+// Opsional: isi dengan ID folder Google Drive untuk simpan foto sebagai URL
+const GDRIVE_FOLDER_ID = '';
+
+// ─── MAPPING: Indicator ID → Column Index ────────────────────────────────────
+// ADVISOR indicators (existing columns L-Q, index 11-16)
+var ADVISOR_INDICATORS = {
+  'wa_personal': 11,      // L
+  'no_baru': 12,          // M
+  'after_sales': 13,      // N
+  'proteksi': 14,         // O
+  'google_review': 15,    // P
+  'mgb': 16               // Q
+};
+
+// CASHIER indicators (NEW columns AD-AG, index 29-32)
+var CASHIER_INDICATORS = {
+  'cashier-sales-id': 29,          // AD
+  'cashier-trx': 30,               // AE
+  'cashier-new-member': 31,        // AF
+  'cashier-instant-upgrade': 32    // AG
+};
+
+// CS indicators (NEW columns AH-AJ, index 33-35)
+var CS_INDICATORS = {
+  'cs-greeting': 33,      // AH
+  'cs-service': 34,       // AI
+  'cs-new-member': 35     // AJ
+};
+
+// ─── Helper: ekstrak nilai per indikator dari data submission ─────────────────
+function extractIndicatorValues(data) {
+  var values = {};
+  if (!data) return values;
+
+  if (Array.isArray(data)) {
+    // Format: [{id:'sales', value:6408950}, ...]
+    for (var i = 0; i < data.length; i++) {
+      var ind = data[i];
+      if (ind && ind.id) {
+        values[ind.id] = ind.value != null ? ind.value : 0;
+      }
+    }
+  } else if (typeof data === 'object') {
+    // Format: {sales: {value:6408950}, ...} atau {sales: 6408950, ...}
+    var keys = Object.keys(data);
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var v = data[key];
+      values[key] = (v && typeof v === 'object') ? (v.value != null ? v.value : 0) : (v != null ? v : 0);
+    }
+  }
+  return values;
+}
+
+// ─── Helper: upload base64 ke Google Drive, kembalikan URL ───────────────────
+function uploadBase64ToDrive(base64Data, filename) {
+  if (!GDRIVE_FOLDER_ID) return null;
+  try {
+    var parts = base64Data.split(',');
+    if (parts.length < 2) return null;
+    var mimeType = parts[0].split(';')[0].split(':')[1] || 'image/jpeg';
+    var bytes = Utilities.base64Decode(parts[1]);
+    var blob = Utilities.newBlob(bytes, mimeType, filename + '.jpg');
+    var folder = DriveApp.getFolderById(GDRIVE_FOLDER_ID);
+    var file = folder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return 'https://drive.google.com/uc?id=' + file.getId();
+  } catch (e) {
+    Logger.log('Drive upload error: ' + e.toString());
+    return null;
+  }
+}
+
+// ─── Helper: konversi foto ke URL Drive (strip base64) ───────────────────────
+function processPhotos(photos, submissionId) {
+  if (!photos || typeof photos !== 'object') return '';
+  var urlMap = {};
+  var keys = Object.keys(photos);
+  for (var ki = 0; ki < keys.length; ki++) {
+    var indicatorId = keys[ki];
+    var photoList = photos[indicatorId];
+    if (!Array.isArray(photoList) || photoList.length === 0) continue;
+    var urls = [];
+    for (var i = 0; i < photoList.length; i++) {
+      var photo = photoList[i];
+      if (typeof photo !== 'string') continue;
+      if (photo.startsWith('http')) {
+        urls.push(photo);
+      } else if (photo.startsWith('data:') && GDRIVE_FOLDER_ID) {
+        var url = uploadBase64ToDrive(photo, submissionId + '_' + indicatorId + '_' + i);
+        if (url) urls.push(url);
+      }
+    }
+    if (urls.length > 0) urlMap[indicatorId] = urls;
+  }
+  return Object.keys(urlMap).length > 0 ? JSON.stringify(urlMap) : '';
+}
+
+// ─── doGet ────────────────────────────────────────────────────────────────────
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: 'ok',
+      message: 'Crown Daily Indicators API - Role System (Real Structure)',
+      timestamp: new Date().toISOString()
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ─── doPost ───────────────────────────────────────────────────────────────────
+function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action;
+    if (!action) throw new Error('Missing "action"');
+
+    var result;
+    var targetSpreadsheetId = params.spreadsheetId || null;
+    switch (action) {
+      case 'addSubmission':
+        if (!params.data) throw new Error('Missing "data"');
+        result = addSubmission(params.data, targetSpreadsheetId);
+        break;
+      case 'updateSettings':
+        result = updateSettings(params.data, targetSpreadsheetId);
+        break;
+      case 'deleteSubmission':
+        result = deleteSubmission(params.data, targetSpreadsheetId);
+        break;
+      case 'createBranch':
+        if (!params.data) throw new Error('Missing "data"');
+        result = createBranch(params.data);
+        break;
+      default:
+        throw new Error('Invalid action: ' + action);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true, data: result, timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('doPost error: ' + error.toString());
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: error.toString(), timestamp: new Date().toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ─── addSubmission ────────────────────────────────────────────────────────────
+/**
+ * ✅ FINAL: Menyimpan submission DENGAN ROLE (Real Structure - 36 kolom)
+ */
+function addSubmission(submission, spreadsheetId) {
+  try {
+    Logger.log('addSubmission: ' + submission.id + ' → ss=' + (spreadsheetId || 'MASTER'));
+
+    var ss = openTargetSpreadsheet(spreadsheetId);
+    var sheet = ss.getSheetByName('submissions');
+    if (!sheet) throw new Error('Sheet "submissions" not found!');
+
+    // ✅ Extract role dari submission.user.role
+    var userRole = '';
+    if (submission.user && submission.user.role) {
+      userRole = String(submission.user.role);
+    }
+    Logger.log('User role: ' + userRole);
+
+    // ✅ Ekstrak nilai per indikator
+    var indValues = extractIndicatorValues(submission.data);
+    Logger.log('Indicator values: ' + JSON.stringify(indValues));
+
+    // ✅ Proses foto → URL Drive saja (strip base64)
+    var photosStr = processPhotos(submission.photos || {}, submission.id || 'sub');
+    Logger.log('Photos stored: ' + photosStr.length + ' chars');
+
+    // ✅ Notes - Extract fields jika ada
+    var notesStr = '';
+    var reason = '';
+    var approval = '';
+    var adminNik = '';
+    var adminNama = '';
+
+    if (submission.notes && typeof submission.notes === 'object') {
+      reason = submission.notes.reason || '';
+      approval = submission.notes.approval || '';
+      adminNik = submission.notes.adminNik || '';
+      adminNama = submission.notes.adminNama || '';
+      notesStr = JSON.stringify(submission.notes);
+    } else if (submission.notes) {
+      notesStr = String(submission.notes);
+    }
+
+    // ✅ Data JSON (untuk backward compatibility)
+    var dataStr = '';
+    if (submission.data) {
+      dataStr = JSON.stringify(submission.data);
+    }
+
+    // ✅ Build row dengan 36 kolom (A-AJ)
+    var rowData = new Array(36);
+
+    // A-H: Metadata (8 kolom)
+    rowData[0] = submission.id || '';                                    // A: id
+    rowData[1] = submission.branchId || '';                              // B: branchId
+    rowData[2] = submission.user ? (submission.user.nik || '') : '';     // C: userNik
+    rowData[3] = submission.user ? (submission.user.nama || '') : '';    // D: userName
+    rowData[4] = userRole;                                               // E: userRole ✅ FILL THIS!
+    rowData[5] = submission.date || '';                                  // F: date
+    rowData[6] = submission.createdAt || new Date().toISOString();       // G: createdAt
+    rowData[7] = submission.totalScore || 0;                             // H: totalScore
+
+    // I-K: Data, Photos, Notes (backward compatibility)
+    rowData[8] = dataStr;          // I: data (JSON)
+    rowData[9] = photosStr;        // J: photos (JSON)
+    rowData[10] = notesStr;        // K: notes (JSON)
+
+    // L-Q: ADVISOR indicators (6 kolom) - index 11-16
+    rowData[11] = indValues['wa_personal'] != null ? indValues['wa_personal'] : 0;
+    rowData[12] = indValues['no_baru'] != null ? indValues['no_baru'] : 0;
+    rowData[13] = indValues['after_sales'] != null ? indValues['after_sales'] : 0;
+    rowData[14] = indValues['proteksi'] != null ? indValues['proteksi'] : 0;
+    rowData[15] = indValues['google_review'] != null ? indValues['google_review'] : 0;
+    rowData[16] = indValues['mgb'] != null ? indValues['mgb'] : 0;
+
+    // R-AC: Existing columns (duplikat & expanded) - index 17-28
+    rowData[17] = photosStr;       // R: photos (duplikat)
+    rowData[18] = notesStr;        // S: notes (duplikat)
+    rowData[19] = indValues['proteksi'] != null ? indValues['proteksi'] : 0;  // T: Proteksi
+    rowData[20] = indValues['google_review'] != null ? indValues['google_review'] : 0; // U: Google Review
+    rowData[21] = indValues['mgb'] != null ? indValues['mgb'] : 0;  // V: MGB
+    rowData[22] = '';              // W: MGB Foto 1
+    rowData[23] = '';              // X: MGB Foto 2
+    rowData[24] = '';              // Y: MGB Foto 3
+    rowData[25] = reason;          // Z: Reason
+    rowData[26] = approval;        // AA: Approval
+    rowData[27] = adminNik;        // AB: Admin NIK
+    rowData[28] = adminNama;       // AC: Admin Nama
+
+    // AD-AG: CASHIER indicators (4 kolom BARU) - index 29-32
+    rowData[29] = indValues['cashier-sales-id'] != null ? indValues['cashier-sales-id'] : 0;
+    rowData[30] = indValues['cashier-trx'] != null ? indValues['cashier-trx'] : 0;
+    rowData[31] = indValues['cashier-new-member'] != null ? indValues['cashier-new-member'] : 0;
+    rowData[32] = indValues['cashier-instant-upgrade'] != null ? indValues['cashier-instant-upgrade'] : 0;
+
+    // AH-AJ: CS indicators (3 kolom BARU) - index 33-35
+    rowData[33] = indValues['cs-greeting'] != null ? indValues['cs-greeting'] : 0;
+    rowData[34] = indValues['cs-service'] != null ? indValues['cs-service'] : 0;
+    rowData[35] = indValues['cs-new-member'] != null ? indValues['cs-new-member'] : 0;
+
+    sheet.appendRow(rowData);
+    Logger.log('✅ Row appended with role: ' + userRole);
+
+    return { id: submission.id, success: true };
+
+  } catch (error) {
+    Logger.log('addSubmission error: ' + error.toString());
+    throw error;
+  }
+}
+
+// ─── updateSettings ───────────────────────────────────────────────────────────
+function updateSettings(data, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('settings');
+  if (!sheet) throw new Error('Sheet "settings" not found!');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.branchId) {
+      sheet.getRange(i + 1, 1, 1, 6).setValues([[
+        data.branchId,
+        data.loginTitle || '',
+        data.loginSubtitle || '',
+        data.minScore || 80,
+        values[i][4],
+        new Date().toISOString()
+      ]]);
+      return { success: true };
+    }
+  }
+  sheet.appendRow([data.branchId, data.loginTitle || '', data.loginSubtitle || '', data.minScore || 80, new Date().toISOString(), new Date().toISOString()]);
+  return { success: true };
+}
+
+// ─── deleteSubmission ─────────────────────────────────────────────────────────
+function deleteSubmission(data, spreadsheetId) {
+  var ss = openTargetSpreadsheet(spreadsheetId);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) throw new Error('Sheet "submissions" not found!');
+
+  var values = sheet.getDataRange().getValues();
+  for (var i = 1; i < values.length; i++) {
+    if (values[i][0] === data.id) {
+      sheet.deleteRow(i + 1);
+      return { success: true, deleted: data.id };
+    }
+  }
+  throw new Error('Submission not found: ' + data.id);
+}
+
+// ─── createBranch ─────────────────────────────────────────────────────────────
+/**
+ * Append branch baru ke tab `branches` di MASTER spreadsheet.
+ * Otomatis bootstrap tab `submissions`, `indicators`, `settings` di spreadsheet target
+ * jika belum ada (header default sama dengan master).
+ *
+ * Payload data:
+ *   { id, nik, name, displayName, adminName, createdAt, spreadsheetId }
+ */
+function createBranch(data) {
+  if (!data || !data.id) throw new Error('Missing branch.id');
+  if (!data.spreadsheetId) throw new Error('Missing branch.spreadsheetId');
+
+  var master = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = master.getSheetByName('branches');
+  if (!sheet) throw new Error('Sheet "branches" not found di master!');
+
+  // Pastikan header punya kolom spreadsheetId
+  var headerRange = sheet.getRange(1, 1, 1, sheet.getLastColumn());
+  var headers = headerRange.getValues()[0];
+  var sidIdx = headers.indexOf('spreadsheetId');
+  if (sidIdx === -1) {
+    headers.push('spreadsheetId');
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sidIdx = headers.length - 1;
+  }
+
+  // Cek duplikat id
+  var idCol = headers.indexOf('id');
+  if (idCol >= 0) {
+    var existing = sheet.getRange(2, idCol + 1, Math.max(1, sheet.getLastRow() - 1), 1).getValues();
+    for (var i = 0; i < existing.length; i++) {
+      if (String(existing[i][0]).trim() === String(data.id).trim()) {
+        throw new Error('Branch id "' + data.id + '" sudah ada');
+      }
+    }
+  }
+
+  // Build row sesuai urutan header
+  var row = headers.map(function (h) {
+    if (h === 'createdAt') return data.createdAt || new Date().toISOString();
+    return data[h] != null ? data[h] : '';
+  });
+  sheet.appendRow(row);
+
+  // Bootstrap tab di spreadsheet target (kalau perlu)
+  try {
+    ensureBranchSheets(data.spreadsheetId);
+  } catch (e) {
+    Logger.log('ensureBranchSheets warning: ' + e.toString());
+  }
+
+  return { success: true, id: data.id, spreadsheetId: data.spreadsheetId };
+}
+
+// ─── ensureBranchSheets ───────────────────────────────────────────────────────
+/**
+ * Bikin tab kosong (submissions/indicators/settings) di spreadsheet target
+ * kalau belum ada. Header-nya sama dengan master.
+ */
+function ensureBranchSheets(spreadsheetId) {
+  if (!spreadsheetId || spreadsheetId === MASTER_SPREADSHEET_ID) return;
+  var ss = SpreadsheetApp.openById(spreadsheetId);
+
+  var SUBMISSIONS_HEADER = [
+    'id','branchId','userNik','userName','userRole','date','createdAt','totalScore',
+    'data','photos','notes',
+    'wa_personal','no_baru','after_sales','proteksi','google_review','mgb',
+    'photos2','notes2','Proteksi','Google Review','MGB',
+    'MGB Foto 1','MGB Foto 2','MGB Foto 3',
+    'Reason','Approval','Admin NIK','Admin Nama',
+    'cashier-sales-id','cashier-trx','cashier-new-member','cashier-instant-upgrade',
+    'cs-greeting','cs-service','cs-new-member'
+  ];
+  var INDICATORS_HEADER = ['branchId','id','name','type','targetValue','targetPhotos','weight','icon','order','role'];
+  var SETTINGS_HEADER = ['branchId','loginTitle','loginSubtitle','minScore','createdAt','updatedAt'];
+
+  var defs = [
+    { name: 'submissions', header: SUBMISSIONS_HEADER },
+    { name: 'indicators', header: INDICATORS_HEADER },
+    { name: 'settings', header: SETTINGS_HEADER }
+  ];
+
+  for (var i = 0; i < defs.length; i++) {
+    var def = defs[i];
+    var sh = ss.getSheetByName(def.name);
+    if (!sh) {
+      sh = ss.insertSheet(def.name);
+      sh.getRange(1, 1, 1, def.header.length).setValues([def.header]);
+    }
+  }
+}
+
+// ─── UPDATE HEADER (TAMBAH 7 KOLOM BARU) ──────────────────────────────────────
+/**
+ * ✅ JALANKAN FUNCTION INI SEKALI untuk tambah 7 kolom baru (AD-AJ)
+ *
+ * TIDAK MENGUBAH kolom A-AC existing!
+ * Hanya TAMBAH kolom AD-AJ di akhir
+ */
+function updateSubmissionsHeader() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('submissions');
+  if (!sheet) {
+    Logger.log('Sheet "submissions" tidak ditemukan!');
+    return;
+  }
+
+  // Get existing header (baris 1)
+  var existingHeader = sheet.getRange(1, 1, 1, 29).getValues()[0];
+
+  Logger.log('Existing header (29 cols): ' + existingHeader.join(' | '));
+
+  // Tambah 7 kolom baru di akhir (AD-AJ)
+  var newCols = [
+    'cashier-sales-id',      // AD
+    'cashier-trx',           // AE
+    'cashier-new-member',    // AF
+    'cashier-instant-upgrade', // AG
+    'cs-greeting',           // AH
+    'cs-service',            // AI
+    'cs-new-member'          // AJ
+  ];
+
+  // Set kolom baru di range AD1:AJ1 (kolom 30-36)
+  sheet.getRange(1, 30, 1, 7).setValues([newCols]);
+
+  Logger.log('✅ Header updated! Added 7 new columns (AD-AJ)');
+  Logger.log('Total kolom sekarang: 36 (A-AJ)');
+  Logger.log('New columns: ' + newCols.join(' | '));
+}
+function ensureAllBranchSheets() {
+  var master = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = master.getSheetByName('branches');
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var idCol = headers.indexOf('id');
+  var sidCol = headers.indexOf('spreadsheetId');
+
+  if (idCol === -1 || sidCol === -1) {
+    Logger.log('❌ Kolom id / spreadsheetId tidak ditemukan di tab branches');
+    return;
+  }
+
+  var ok = 0, skip = 0, fail = 0;
+  for (var i = 1; i < data.length; i++) {
+    var id = data[i][idCol];
+    var sid = data[i][sidCol];
+    if (!id) continue;
+    if (!sid || sid === MASTER_SPREADSHEET_ID) {
+      Logger.log('⏭️ Skip ' + id + ' (pakai master)');
+      skip++;
+      continue;
+    }
+    try {
+      ensureBranchSheets(sid);
+      Logger.log('✅ ' + id + ' → ' + sid);
+      ok++;
+    } catch (e) {
+      Logger.log('❌ ' + id + ' → ' + e.toString());
+      fail++;
+    }
+  }
+  Logger.log('Selesai. OK=' + ok + ', Skip=' + skip + ', Fail=' + fail);
+}
+function debugBranchesSheet() {
+  var master = SpreadsheetApp.openById(MASTER_SPREADSHEET_ID);
+  var sheet = master.getSheetByName('branches');
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+
+  Logger.log('=== HEADERS (' + headers.length + ' kolom) ===');
+  for (var h = 0; h < headers.length; h++) {
+    Logger.log('  [' + h + '] "' + headers[h] + '" (panjang: ' + String(headers[h]).length + ')');
+  }
+
+  var sidCol = headers.indexOf('spreadsheetId');
+  Logger.log('=== sidCol index: ' + sidCol + ' ===');
+
+  Logger.log('=== ROWS ===');
+  for (var i = 1; i < data.length; i++) {
+    Logger.log('Row ' + (i+1) + ':');
+    for (var j = 0; j < headers.length; j++) {
+      Logger.log('  ' + headers[j] + ' = "' + data[i][j] + '"');
+    }
+  }
+}
